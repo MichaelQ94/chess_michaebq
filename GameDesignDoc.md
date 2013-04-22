@@ -7,10 +7,8 @@
 ## Gameplay
 + Players take turns making moves (white player moves first)
 + Game-ending conditions
-  + Checkmate: a player's king is in check and cannot get out of check in one turn
-    + In this case, the other player wins
-  + Stalemate: a player's king is not in check but there are no legal moves available
-    + This results in a draw
+  + Checkmate: a player's king is in check and cannot get out of check in one turn. In this case, the other player wins.
+  + Stalemate: a player's king is not in check but there are no legal moves available. This results in a draw.
 + A player clicks on a piece to select it, and then clicks the destination square to move the piece
   + The move will only be executed if it is legal
   + Moving to a square which contains a piece will result in that piece being captured
