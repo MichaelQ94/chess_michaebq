@@ -14,3 +14,12 @@
 
 # Editor temporary files
 *~
+
+# Dynamically generated .pro files
+game_michaebq.pro
+
+# Dynamically generated .cpp files
+moc_mainwindow.cpp
+
+# Project-specific executables
+game_michaebq
