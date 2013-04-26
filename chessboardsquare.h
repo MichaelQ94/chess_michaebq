@@ -13,13 +13,15 @@ class ChessBoardSquare
 	private:
 		ChessPiece *piece_;
 		ChessBoard *board_;
+		int index_;
 
 	public:
-		ChessBoardSquare(ChessBoard* board);
+		ChessBoardSquare(ChessBoard* board, int index);
 		void setPiece(ChessPiece *piece);
 		void clear();
+		int index();
 		ChessPiece* getPiece();
-		ChessBoard* board();
+
 		~ChessBoardSquare();
 };
 #endif
