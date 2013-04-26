@@ -20,6 +20,8 @@ game_michaebq.pro
 
 # Dynamically generated .cpp files
 moc_mainwindow.cpp
+moc_graphicswindow.cpp
+moc_guipiece.cpp
 
 # Project-specific executables
 game_michaebq
