@@ -2,11 +2,11 @@
 
 MainWindow::MainWindow(QApplication *app)
 {
-	setFixedSize(1000, 700);
+	setFixedSize(1000, 800);
 	setWindowTitle("Chess");
 	
 	//Initialize members to be used later
-	//gwindow = NULL;
+	gwindow = NULL;
 	
 	//Initialize actions
 	quit = new QAction("Quit", this);
@@ -29,8 +29,14 @@ MainWindow::MainWindow(QApplication *app)
 
 MainWindow::~MainWindow()
 {
+	if(gwindow != NULL)
+		delete gwindow;
+	delete quit;
+	delete startGame;
 }
 
 void MainWindow::start_game()
 {
+	gwindow = new GraphicsWindow();
+	setCentralWidget(gwindow->getViewPort());
 }

@@ -24,13 +24,14 @@
 #include <QStringList>
 #include <QStringListModel>
 #include <QMessageBox>
+#include "graphicswindow.h"
 
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 	
 	private:
-		//GraphicsWindow *gwindow;
+		GraphicsWindow *gwindow;
 		QApplication *app;
 		QMenu *file;
 		QAction *quit, *startGame;
