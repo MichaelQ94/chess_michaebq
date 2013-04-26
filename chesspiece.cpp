@@ -5,7 +5,9 @@ ChessPiece::ChessPiece(char type, char color, int value)
 	piece_type = type;
 	piece_color = color;
 	value_ = value;
+	square_ = NULL;
 	captured_ = false;
+	
 }
 
 char ChessPiece::type()
@@ -31,5 +33,16 @@ bool ChessPiece::captured()
 void ChessPiece::isCaptured()
 {
 	captured_ = true;
-	
+	square_->clear();
+	square_ = NULL;
+}
+
+void ChessPiece::move(ChessBoardSquare *dest)
+{
+	if(square_ != NULL)
+		square_->clear();
+	if(dest->getPiece() != NULL)
+		dest->getPiece()->isCaptured();
+	square_ = dest;
+	dest->setPiece(this);
 }

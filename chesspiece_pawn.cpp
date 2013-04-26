@@ -7,9 +7,6 @@ ChessPiece_Pawn::ChessPiece_Pawn(char color) : ChessPiece('P', color, 1)
 
 ChessPiece_Pawn::~ChessPiece_Pawn()
 {
-	delete promoted_piece;
-}
-
-void ChessPiece_Pawn::move(ChessBoardSquare *dest)
-{
+	if(promoted_piece != NULL)
+		delete promoted_piece;
 }

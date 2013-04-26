@@ -19,7 +19,3 @@ void ChessPiece_King::outOfCheck()
 {
 	inCheck_ = false;
 }
-
-void ChessPiece_King::move(ChessBoardSquare *dest)
-{
-}
