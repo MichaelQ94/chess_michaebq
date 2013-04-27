@@ -5,50 +5,50 @@ ChessBoard::ChessBoard()
 	whiteToMove_ = true;
 	
 	//instantiate and allocate memory for white pieces
-	whitePieces_[0] = new ChessPiece_Pawn('W');
-	whitePieces_[1]  = new ChessPiece_Pawn('W');
-	whitePieces_[2]  = new ChessPiece_Pawn('W');
-	whitePieces_[3]  = new ChessPiece_Pawn('W');
-	whitePieces_[4]  = new ChessPiece_Pawn('W');
-	whitePieces_[5]  = new ChessPiece_Pawn('W');
-	whitePieces_[6]  = new ChessPiece_Pawn('W');
-	whitePieces_[7]  = new ChessPiece_Pawn('W');
+	whitePieces_[0] = new ChessPiece_Pawn(this, 'W');
+	whitePieces_[1]  = new ChessPiece_Pawn(this, 'W');
+	whitePieces_[2]  = new ChessPiece_Pawn(this, 'W');
+	whitePieces_[3]  = new ChessPiece_Pawn(this, 'W');
+	whitePieces_[4]  = new ChessPiece_Pawn(this, 'W');
+	whitePieces_[5]  = new ChessPiece_Pawn(this, 'W');
+	whitePieces_[6]  = new ChessPiece_Pawn(this, 'W');
+	whitePieces_[7]  = new ChessPiece_Pawn(this, 'W');
 	
-	whitePieces_[8]  = new ChessPiece_Knight('W');
-	whitePieces_[9]  = new ChessPiece_Knight('W');
+	whitePieces_[8]  = new ChessPiece_Knight(this, 'W');
+	whitePieces_[9]  = new ChessPiece_Knight(this, 'W');
 	
-	whitePieces_[10]  = new ChessPiece_Bishop('W');
-	whitePieces_[11]  = new ChessPiece_Bishop('W');
+	whitePieces_[10]  = new ChessPiece_Bishop(this, 'W');
+	whitePieces_[11]  = new ChessPiece_Bishop(this, 'W');
 	
-	whitePieces_[12]  = new ChessPiece_Rook('W');
-	whitePieces_[13]  = new ChessPiece_Rook('W');
+	whitePieces_[12]  = new ChessPiece_Rook(this, 'W');
+	whitePieces_[13]  = new ChessPiece_Rook(this, 'W');
 	
-	whitePieces_[14]  = new ChessPiece_Queen('W');
+	whitePieces_[14]  = new ChessPiece_Queen(this, 'W');
 	
-	whitePieces_[15]  = new ChessPiece_King('W');
+	whitePieces_[15]  = new ChessPiece_King(this, 'W');
 	
 	//instantiate and allocate memory for black pieces
-	blackPieces_[0] = new ChessPiece_Pawn('B');
-	blackPieces_[1] = new ChessPiece_Pawn('B');
-	blackPieces_[2] = new ChessPiece_Pawn('B');
-	blackPieces_[3] = new ChessPiece_Pawn('B');
-	blackPieces_[4] = new ChessPiece_Pawn('B');
-	blackPieces_[5] = new ChessPiece_Pawn('B');
-	blackPieces_[6] = new ChessPiece_Pawn('B');
-	blackPieces_[7] = new ChessPiece_Pawn('B');
+	blackPieces_[0] = new ChessPiece_Pawn(this, 'B');
+	blackPieces_[1] = new ChessPiece_Pawn(this, 'B');
+	blackPieces_[2] = new ChessPiece_Pawn(this, 'B');
+	blackPieces_[3] = new ChessPiece_Pawn(this, 'B');
+	blackPieces_[4] = new ChessPiece_Pawn(this, 'B');
+	blackPieces_[5] = new ChessPiece_Pawn(this, 'B');
+	blackPieces_[6] = new ChessPiece_Pawn(this, 'B');
+	blackPieces_[7] = new ChessPiece_Pawn(this, 'B');
 	
-	blackPieces_[8] = new ChessPiece_Knight('B');
-	blackPieces_[9] = new ChessPiece_Knight('B');
+	blackPieces_[8] = new ChessPiece_Knight(this, 'B');
+	blackPieces_[9] = new ChessPiece_Knight(this, 'B');
 	
-	blackPieces_[10] = new ChessPiece_Bishop('B');
-	blackPieces_[11] = new ChessPiece_Bishop('B');
+	blackPieces_[10] = new ChessPiece_Bishop(this, 'B');
+	blackPieces_[11] = new ChessPiece_Bishop(this, 'B');
 	
-	blackPieces_[12] = new ChessPiece_Rook('B');
-	blackPieces_[13] = new ChessPiece_Rook('B');
+	blackPieces_[12] = new ChessPiece_Rook(this, 'B');
+	blackPieces_[13] = new ChessPiece_Rook(this, 'B');
 	
-	blackPieces_[14] = new ChessPiece_Queen('B');
+	blackPieces_[14] = new ChessPiece_Queen(this, 'B');
 	
-	blackPieces_[15] = new ChessPiece_King('B');
+	blackPieces_[15] = new ChessPiece_King(this, 'B');
 	
 	//instantiate allocate memory for board squares
 	for(int i = 0; i < 64; ++i)
