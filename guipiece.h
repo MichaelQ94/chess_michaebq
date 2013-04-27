@@ -40,6 +40,7 @@ class GUIPiece : public QGraphicsPixmapItem
 		int getX();
 		int getY();
 		char color();
+		char type();
 	
 };
 #endif

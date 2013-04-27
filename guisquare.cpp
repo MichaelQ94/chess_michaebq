@@ -36,6 +36,20 @@ void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)
 	}
 	else if(gw_->selectedPiece() != NULL && highlighted_)
 	{
+		//if castling
+		if(gw_->selectedPiece()->type() == 'K')
+		{
+			if(gw_->selectedSquare()->index() == index() - 2)
+			{
+				gw_->castleKingSide();
+				return;
+			}
+			else if(gw_->selectedSquare()->index() == index() + 2)
+			{
+				gw_->castleQueenSide();
+				return;
+			}
+		}
 		gw_->selectedPiece()->move(this);
 		gw_->deselectPiece();
 		gw_->selectedSquare()->resetColor();
@@ -93,6 +107,11 @@ int GUISquare::getX()
 int GUISquare::getY()
 {
 	return y_;
+}
+
+int GUISquare::index()
+{
+	return square_->index();
 }
 
 ChessBoardSquare* GUISquare::square()

@@ -9,6 +9,7 @@ ChessPiece::ChessPiece(ChessBoard *board, char type, char color, int value)
 	value_ = value;
 	square_ = NULL;
 	captured_ = false;
+	hasMoved_ = false;
 	
 }
 
@@ -39,7 +40,15 @@ void ChessPiece::isCaptured()
 	square_ = NULL;
 }
 
-void ChessPiece::reset() {}
+bool ChessPiece::hasMoved()
+{
+	return hasMoved_;
+}
+
+void ChessPiece::reset()
+{
+	hasMoved_ = false;
+}
 
 void ChessPiece::move(ChessBoardSquare *dest)
 {
@@ -49,4 +58,5 @@ void ChessPiece::move(ChessBoardSquare *dest)
 		dest->getPiece()->isCaptured();
 	square_ = dest;
 	dest->setPiece(this);
+	hasMoved_ = true;
 }

@@ -83,6 +83,16 @@ GraphicsWindow::GraphicsWindow()
 		blackguipieces_[i]->reset();
 	}
 	
+	//kings
+	whiteguipieces_[15]->reset();
+	blackguipieces_[15]->reset();
+	
+	//rooks
+	whiteguipieces_[12]->reset();
+	whiteguipieces_[13]->reset();
+	blackguipieces_[12]->reset();
+	blackguipieces_[13]->reset();
+	
 	
 }
 
@@ -153,6 +163,28 @@ void GraphicsWindow::capturePiece(GUIPiece *piece)
 bool GraphicsWindow::whiteToMove()
 {
 	return board_.whiteToMove();
+}
+
+void GraphicsWindow::castleKingSide()
+{
+	selectedPiece_->move(guisquares_[selectedSquare_->index() + 2]);
+	guisquares_[selectedSquare_->index() + 3]->guiPiece()->move(guisquares_[selectedSquare_->index() + 1]);
+	selectedPiece_ = NULL;
+	selectedSquare_->resetColor();
+	selectedSquare_ = NULL;
+	changeTurn();
+	dehighlight();
+}
+
+void GraphicsWindow::castleQueenSide()
+{
+	selectedPiece_->move(guisquares_[selectedSquare_->index() - 2]);
+	guisquares_[selectedSquare_->index() - 4]->guiPiece()->move(guisquares_[selectedSquare_->index() - 1]);
+	selectedPiece_ = NULL;
+	selectedSquare_->resetColor();
+	selectedSquare_ = NULL;
+	changeTurn();
+	dehighlight();
 }
 
 GraphicsWindow::~GraphicsWindow()

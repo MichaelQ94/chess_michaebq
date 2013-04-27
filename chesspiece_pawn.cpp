@@ -75,26 +75,10 @@ vector<int> ChessPiece_Pawn::legalMoves()
 	}
 	else //pawn has been promoted
 	{
-		//implement
+		//implement later
 	}
 	
 	return legalMoves;
-}
-
-void ChessPiece_Pawn::move(ChessBoardSquare *dest)
-{
-	if(square_ != NULL)
-		square_->clear();
-	if(dest->getPiece() != NULL)
-		dest->getPiece()->isCaptured();
-	square_ = dest;
-	dest->setPiece(this);
-	hasMoved_ = true;
-}
-
-void ChessPiece_Pawn::reset()
-{
-	hasMoved_ = false;
 }
 
 ChessPiece_Pawn::~ChessPiece_Pawn()

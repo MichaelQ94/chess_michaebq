@@ -50,6 +50,8 @@ class GraphicsWindow : public QWidget
 		void capturePiece(GUIPiece *piece);
 		void changeTurn();
 		bool whiteToMove();
+		void castleKingSide();
+		void castleQueenSide();
 		QWidget* getViewPort();
 		
 };
