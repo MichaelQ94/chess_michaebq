@@ -65,6 +65,11 @@ char GUIPiece::color()
 	return piece_->color();
 }
 
+char GUIPiece::type()
+{
+	return piece_->type();
+}
+
 vector<int> GUIPiece::legalMoves()
 {
 	return piece_->legalMoves();
