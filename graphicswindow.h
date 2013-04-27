@@ -33,11 +33,23 @@ class GraphicsWindow : public QWidget
 		GUIPiece* whiteguipieces_[16];
 		GUIPiece* blackguipieces_[16];
 		
-		bool pieceSelected_; //used to detect if a piece has been selected
+		GUIPiece* selectedPiece_;
+		GUISquare* selectedSquare_;
 	
 	public:
 		GraphicsWindow();
 		~GraphicsWindow();
+		void setSelectedPiece(GUIPiece* gpiece);
+		void setSelectedSquare(GUISquare* gsquare);
+		void deselectPiece();
+		void deselectSquare();
+		GUIPiece* selectedPiece();
+		GUISquare* selectedSquare();
+		void highlightSquares(vector<int> squares);
+		void dehighlight();
+		void capturePiece(GUIPiece *piece);
+		void changeTurn();
+		bool whiteToMove();
 		QWidget* getViewPort();
 		
 };

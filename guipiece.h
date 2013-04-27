@@ -29,13 +29,17 @@ class GUIPiece : public QGraphicsPixmapItem
 	private:
 		GraphicsWindow *gw_;
 		ChessPiece *piece_;
+		GUISquare *gsquare_;
 		int x_, y_;
 	
 	public:
 		GUIPiece(ChessPiece *piece, GraphicsWindow *gw);
+		vector<int> legalMoves();
 		void move(GUISquare *dest);
+		void reset();
 		int getX();
 		int getY();
+		char color();
 	
 };
 #endif

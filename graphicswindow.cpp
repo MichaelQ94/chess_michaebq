@@ -2,14 +2,12 @@
 
 GraphicsWindow::GraphicsWindow()
 {
-	pieceSelected_ = false;
+	selectedPiece_ = NULL;
+	selectedSquare_ = NULL;
 	scene = new QGraphicsScene(this);
 	view = new QGraphicsView(scene);
 	
 	view->setFixedSize(500, 500);
-	
-	QBrush graybrush(Qt::lightGray);
-	QBrush whitebrush(Qt::white);
 	
 	int width = 60;
 	//display the board
@@ -20,11 +18,11 @@ GraphicsWindow::GraphicsWindow()
 			
 		if((9 - (9 * i / 8)) % 2 == 0) //light square
 		{
-			guisquares_[i]->setBrush(whitebrush);
+			guisquares_[i]->setColor(Qt::white);
 		}
 		else //dark square
 		{
-			guisquares_[i]->setBrush(graybrush);
+			guisquares_[i]->setColor(Qt::lightGray);
 		}
 		
 		scene->addItem(guisquares_[i]);
@@ -75,11 +73,86 @@ GraphicsWindow::GraphicsWindow()
 	blackguipieces_[11]->move(guisquares_[61]); //black right bishop
 	blackguipieces_[9]->move(guisquares_[62]); //black right knight
 	blackguipieces_[13]->move(guisquares_[63]); //black right rook
+	
+	//reset pieces which have conditions to detect if they have moved
+	//since placement on the board requires moving the pieces
+	//pawns
+	for(int i = 0; i < 8; ++i)
+	{
+		whiteguipieces_[i]->reset();
+		blackguipieces_[i]->reset();
+	}
+	
+	
 }
 
 QWidget* GraphicsWindow::getViewPort()
 {
 	return view->viewport();
+}
+
+void GraphicsWindow::highlightSquares(vector<int> squares)
+{
+	for(unsigned int i = 0; i < squares.size(); ++i)
+	{
+		guisquares_[squares[i]]->highlight();
+	}
+}
+
+void GraphicsWindow::dehighlight()
+{
+	for(int i = 0; i < 64; ++i)
+	{
+		if(guisquares_[i]->highlighted())
+		{
+			guisquares_[i]->resetColor();
+		}
+	}
+}
+
+void GraphicsWindow::setSelectedPiece(GUIPiece *gpiece)
+{
+	selectedPiece_ = gpiece;
+}
+
+void GraphicsWindow::setSelectedSquare(GUISquare *gsquare)
+{
+	selectedSquare_ = gsquare;
+}
+
+GUIPiece* GraphicsWindow::selectedPiece()
+{
+	return selectedPiece_;
+}
+
+GUISquare* GraphicsWindow::selectedSquare()
+{
+	return selectedSquare_;
+}
+
+void GraphicsWindow::deselectPiece()
+{
+	selectedPiece_ = NULL;
+}
+
+void GraphicsWindow::deselectSquare()
+{
+	selectedSquare_ = NULL;
+}
+
+void GraphicsWindow::changeTurn()
+{
+	board_.changeTurn();
+}
+
+void GraphicsWindow::capturePiece(GUIPiece *piece)
+{
+	scene->removeItem(piece);
+}
+
+bool GraphicsWindow::whiteToMove()
+{
+	return board_.whiteToMove();
 }
 
 GraphicsWindow::~GraphicsWindow()

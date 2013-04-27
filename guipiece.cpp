@@ -4,6 +4,7 @@ GUIPiece::GUIPiece(ChessPiece *piece, GraphicsWindow *gw) : QGraphicsPixmapItem(
 {
 	piece_ = piece;
 	gw_ = gw;
+	gsquare_ = NULL;
 	std::string filename = "";
 	
 	switch(piece_->color())
@@ -44,8 +45,9 @@ GUIPiece::GUIPiece(ChessPiece *piece, GraphicsWindow *gw) : QGraphicsPixmapItem(
 	
 	filename += ".png";
 	
+	
+	
 	setPixmap(QString(filename.c_str()));
-	setPos(0, 0);
 }
 
 int GUIPiece::getX()
@@ -58,7 +60,29 @@ int GUIPiece::getY()
 	return y_;
 }
 
+char GUIPiece::color()
+{
+	return piece_->color();
+}
+
+vector<int> GUIPiece::legalMoves()
+{
+	return piece_->legalMoves();
+}
+
+void GUIPiece::reset()
+{
+	piece_->reset();
+}
+
 void GUIPiece::move(GUISquare *dest)
 {
-	setPos(dest->getX(), dest->getY());
+	piece_->move(dest->square());
+	if(dest->guiPiece() != NULL)
+		gw_->capturePiece(dest->guiPiece());
+	setPos(dest->getX(), dest->getY()); //the move
+	if(gsquare_ != NULL)
+		gsquare_->clear();
+	gsquare_ = dest;
+	gsquare_->setPiece(this);
 }
