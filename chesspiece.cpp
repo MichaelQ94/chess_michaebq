@@ -1,7 +1,9 @@
 #include "chesspiece.h"
+using namespace std;
 
-ChessPiece::ChessPiece(char type, char color, int value)
+ChessPiece::ChessPiece(ChessBoard *board, char type, char color, int value)
 {
+	board_ = board;
 	piece_type = type;
 	piece_color = color;
 	value_ = value;
@@ -36,6 +38,8 @@ void ChessPiece::isCaptured()
 	square_->clear();
 	square_ = NULL;
 }
+
+void ChessPiece::reset() {}
 
 void ChessPiece::move(ChessBoardSquare *dest)
 {
