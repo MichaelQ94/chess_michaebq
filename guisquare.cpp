@@ -24,7 +24,7 @@ void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)
 			gw_->setSelectedSquare(this);
 		}
 	}
-	else if(gw_->selectedPiece() != NULL)
+	else if(gw_->selectedPiece() != NULL && highlighted_)
 	{
 		gw_->selectedPiece()->move(this);
 		gw_->deselectPiece();
@@ -32,6 +32,16 @@ void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)
 		gw_->deselectSquare();
 		gw_->changeTurn();
 		gw_->dehighlight();
+	}
+	else if(gw_->selectedPiece() != NULL && gpiece_ != NULL && 
+		gw_->selectedPiece()->color() == gpiece_->color())
+		//user wishes to select a difference piece
+	{
+		gw_->dehighlight();
+		highlight();
+		gw_->highlightSquares(gpiece_->legalMoves());
+		gw_->setSelectedPiece(gpiece_);
+		gw_->setSelectedSquare(this);
 	}
 }
 
