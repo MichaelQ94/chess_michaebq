@@ -14,6 +14,18 @@ ChessPiece::ChessPiece(ChessBoard *board, char type, char color, int value)
 	
 }
 
+void ChessPiece::copyData(ChessPiece *piece)
+{
+	board_ = piece->board_;
+	piece_type = piece->piece_type;
+	piece_color = piece->piece_color;
+	value_ = piece->value_;
+	square_ = piece->square_;
+	captured_ = false;
+	hasMoved_ = false;
+	enPassant_ = false;
+}
+
 char ChessPiece::type()
 {
 	return piece_type;
@@ -59,6 +71,11 @@ void ChessPiece::reset()
 void ChessPiece::refresh()
 {
 	
+}
+
+void ChessPiece::promote(char type)
+{
+	type = type;
 }
 
 void ChessPiece::move(ChessBoardSquare *dest)

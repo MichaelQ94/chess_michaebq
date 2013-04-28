@@ -42,6 +42,7 @@ class GUIPiece : public QGraphicsPixmapItem
 		char color();
 		char type();
 		bool enPassant();
+		void promote(char type);
 	
 };
 #endif

@@ -56,7 +56,19 @@ void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)
 		{
 			gw_->enPassantCapture(this);
 		}
+		
+		//move the piece
 		gw_->selectedPiece()->move(this);
+		
+		//if promotion
+		if(gw_->selectedPiece()->type() == 'P' &&
+			((gw_->selectedPiece()->color() == 'W' && square_->index() / 8 == 7) ||
+			(gw_->selectedPiece()->color() == 'B' && square_->index() / 8 == 0)))
+		{
+				gw_->promote(gw_->selectedPiece());
+		}
+		
+		//deselect the piece and return the squares to normal
 		gw_->deselectPiece();
 		gw_->selectedSquare()->resetColor();
 		gw_->deselectSquare();

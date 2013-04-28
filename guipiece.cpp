@@ -85,6 +85,47 @@ bool GUIPiece::enPassant()
 	return piece_->enPassant();
 }
 
+void GUIPiece::promote(char type)
+{
+	piece_->promote(type);
+	std::string filename = "";
+	
+	switch(piece_->color())
+	{
+		case 'W':
+			filename += "white";
+			break;
+		
+		case 'B':
+			filename += "black";
+	}
+	
+	switch(type)
+	{
+		
+		case 'N':
+			filename += "knight";
+			break;
+		
+		case 'B':
+			filename += "bishop";
+			break;
+		
+		case 'R':
+			filename += "rook";
+			break;
+		
+		case 'Q':
+			filename += "queen";
+	}
+	
+	filename += ".png";
+	
+	
+	
+	setPixmap(QString(filename.c_str()));
+}
+
 void GUIPiece::move(GUISquare *dest)
 {
 	piece_->move(dest->square());

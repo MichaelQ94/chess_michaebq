@@ -205,6 +205,11 @@ void GraphicsWindow::enPassantCapture(GUISquare* gsquare)
 	}
 }
 
+void GraphicsWindow::promote(GUIPiece *gpiece)
+{
+	gpiece->promote('Q');
+}
+
 GraphicsWindow::~GraphicsWindow()
 {
 	for(int i = 0; i < 64; ++i)

@@ -37,6 +37,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::start_game()
 {
+	if(gwindow != NULL)
+		delete gwindow;
 	gwindow = new GraphicsWindow();
 	setCentralWidget(gwindow->getViewPort());
 }

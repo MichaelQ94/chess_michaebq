@@ -32,10 +32,12 @@ class ChessPiece
 		bool hasMoved();
 		bool enPassant();
 		void reset(); //used to reset the hasMoved conditions on pieces after their initial placement on the board
+		void copyData(ChessPiece *piece);
 		
 		virtual void move(ChessBoardSquare *dest);
 		virtual void refresh();
 		virtual vector<int> legalMoves() = 0;
+		virtual void promote(char type);
 		
 };
 
@@ -47,6 +49,7 @@ class ChessPiece_Pawn : public ChessPiece
 		vector<int> legalMoves();
 		void move(ChessBoardSquare*);
 		void refresh();
+		void promote(char type);
 	private:
 		ChessPiece *promoted_piece;
 };

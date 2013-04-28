@@ -53,6 +53,7 @@ class GraphicsWindow : public QWidget
 		void castleKingSide();
 		void castleQueenSide();
 		void enPassantCapture(GUISquare* gsquare);
+		void promote(GUIPiece* gpiece);
 		QWidget* getViewPort();
 		
 };

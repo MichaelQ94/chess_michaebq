@@ -104,13 +104,14 @@ void ChessPiece_Pawn::move(ChessBoardSquare *dest)
 		square_->clear();
 	if(dest->getPiece() != NULL)
 		dest->getPiece()->isCaptured();
-	else if(piece_color == 'W' && 
+	//en passant captures
+	else if(promoted_piece == NULL && piece_color == 'W' && 
 		board_->square(dest->index() - 8)->getPiece() != NULL &&
 		board_->square(dest->index() - 8)->getPiece()->enPassant())
 	{
 		board_->square(dest->index() - 8)->getPiece()->isCaptured();
 	}
-	else if(piece_color == 'B' && 
+	else if(promoted_piece == NULL && piece_color == 'B' && 
 		board_->square(dest->index() + 8)->getPiece() != NULL &&
 		board_->square(dest->index() + 8)->getPiece()->enPassant())
 	{
@@ -121,6 +122,38 @@ void ChessPiece_Pawn::move(ChessBoardSquare *dest)
 	if(!hasMoved_)
 		enPassant_ = true;
 	hasMoved_ = true;
+	if(promoted_piece != NULL)
+	{
+		promoted_piece->copyData(this);
+	}
+}
+
+void ChessPiece_Pawn::promote(char type)
+{
+	switch(type)
+	{
+		case 'N':
+			promoted_piece = new ChessPiece_Knight(board_, piece_color);
+			piece_type = 'N';
+			value_ = 3;
+			break;
+		case 'B':
+			promoted_piece = new ChessPiece_Bishop(board_, piece_color);
+			piece_type = 'B';
+			value_ = 3;
+			break;
+		case 'R':
+			promoted_piece = new ChessPiece_Rook(board_, piece_color);
+			piece_type = 'R';
+			value_ = 5;
+			break;
+		case 'Q':
+			promoted_piece = new ChessPiece_Queen(board_, piece_color);
+			piece_type = 'Q';
+			value_ = 9;
+	}
+	
+	promoted_piece->copyData(this);
 }
 
 ChessPiece_Pawn::~ChessPiece_Pawn()
