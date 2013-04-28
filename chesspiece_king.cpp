@@ -4,7 +4,6 @@ using namespace std;
 ChessPiece_King::ChessPiece_King(ChessBoard *board, char color) : ChessPiece(board, 'K', color, -1)
 {
 	inCheck_ = false;
-	hasMoved_ = false;
 }
 
 vector<int> ChessPiece_King::legalMoves()
