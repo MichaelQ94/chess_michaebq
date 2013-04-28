@@ -52,6 +52,7 @@ class GraphicsWindow : public QWidget
 		bool whiteToMove();
 		void castleKingSide();
 		void castleQueenSide();
+		void enPassantCapture(GUISquare* gsquare);
 		QWidget* getViewPort();
 		
 };

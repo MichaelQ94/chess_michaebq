@@ -80,6 +80,11 @@ void GUIPiece::reset()
 	piece_->reset();
 }
 
+bool GUIPiece::enPassant()
+{
+	return piece_->enPassant();
+}
+
 void GUIPiece::move(GUISquare *dest)
 {
 	piece_->move(dest->square());

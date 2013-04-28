@@ -5,6 +5,7 @@ ChessPiece_Pawn::ChessPiece_Pawn(ChessBoard *board, char color) : ChessPiece(boa
 {
 	promoted_piece = NULL;
 	hasMoved_ = false;
+	enPassant_ = false;
 }
 
 vector<int> ChessPiece_Pawn::legalMoves()
@@ -28,16 +29,22 @@ vector<int> ChessPiece_Pawn::legalMoves()
 				}
 			}
 			
-			index = square_->index() + 7;
-			if(index % 8 != 7 && (board_->square(index)->getPiece() != NULL && 
-				board_->square(index)->getPiece()->color() == 'B')) //can capture a black piece
+			index = square_->index() + 7;	
+			if(index % 8 != 7 && ((board_->square(index)->getPiece() != NULL && 
+				board_->square(index)->getPiece()->color() == 'B') || //can capture a black piece
+				(board_->square(index-8)->getPiece() != NULL &&
+				board_->square(index-8)->getPiece()->color() == 'B' &&
+				board_->square(index-8)->getPiece()->enPassant()))) //can capture via en passant
 			{
 				legalMoves.push_back(index);
 			}
 			
 			index = square_->index() + 9;
-			if(index % 8 != 0 && (board_->square(index)->getPiece() != NULL && 
-				board_->square(index)->getPiece()->color() == 'B')) //can capture a black piece
+			if(index % 8 != 0 && ((board_->square(index)->getPiece() != NULL && 
+				board_->square(index)->getPiece()->color() == 'B') || //can capture a black piece
+				(board_->square(index-8)->getPiece() != NULL &&
+				board_->square(index-8)->getPiece()->color() == 'B' &&
+				board_->square(index-8)->getPiece()->enPassant()))) //can capture via en passant
 			{
 				legalMoves.push_back(index);
 			}
@@ -58,27 +65,64 @@ vector<int> ChessPiece_Pawn::legalMoves()
 			}
 			
 			index = square_->index() - 9;
-			if(index % 8 != 7 && (board_->square(index)->getPiece() != NULL && 
-				board_->square(index)->getPiece()->color() == 'W')) //can capture a white piece
+			if(index % 8 != 7 && ((board_->square(index)->getPiece() != NULL && 
+				board_->square(index)->getPiece()->color() == 'W') || //can capture a white piece
+				(board_->square(index+8)->getPiece() != NULL &&
+				board_->square(index+8)->getPiece()->color() == 'W' &&
+				board_->square(index+8)->getPiece()->enPassant()))) //can capture via en passant
 			{
 				legalMoves.push_back(index);
 			}
 			
 			index = square_->index() - 7;
-			if(index % 8 != 0 && (board_->square(index)->getPiece() != NULL && 
-				board_->square(index)->getPiece()->color() == 'W')) //can capture a white piece
+			if(index % 8 != 0 && ((board_->square(index)->getPiece() != NULL && 
+				board_->square(index)->getPiece()->color() == 'W') || //can capture a white piece
+				(board_->square(index+8)->getPiece() != NULL &&
+				board_->square(index+8)->getPiece()->color() == 'W' &&
+				board_->square(index+8)->getPiece()->enPassant()))) //can capture via en passant
 			{
 				legalMoves.push_back(index);
 			}
 			
 		}
+			
 	}
 	else //pawn has been promoted
 	{
-		//implement later
+		return promoted_piece->legalMoves();
 	}
 	
 	return legalMoves;
+}
+
+void ChessPiece_Pawn::refresh()
+{
+	enPassant_ = false;
+}
+
+void ChessPiece_Pawn::move(ChessBoardSquare *dest)
+{
+	if(square_ != NULL)
+		square_->clear();
+	if(dest->getPiece() != NULL)
+		dest->getPiece()->isCaptured();
+	else if(piece_color == 'W' && 
+		board_->square(dest->index() - 8)->getPiece() != NULL &&
+		board_->square(dest->index() - 8)->getPiece()->enPassant())
+	{
+		board_->square(dest->index() - 8)->getPiece()->isCaptured();
+	}
+	else if(piece_color == 'B' && 
+		board_->square(dest->index() + 8)->getPiece() != NULL &&
+		board_->square(dest->index() + 8)->getPiece()->enPassant())
+	{
+		board_->square(dest->index() + 8)->getPiece()->isCaptured();
+	}
+	square_ = dest;
+	dest->setPiece(this);
+	if(!hasMoved_)
+		enPassant_ = true;
+	hasMoved_ = true;
 }
 
 ChessPiece_Pawn::~ChessPiece_Pawn()

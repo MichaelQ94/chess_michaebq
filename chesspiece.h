@@ -18,6 +18,7 @@ class ChessPiece
 		int value_; //pawn-1, knight-3, bishop-3, rook-5, queen-9, king-(-1)
 		bool captured_; //false if on board (default)
 		bool hasMoved_;
+		bool enPassant_;
 		ChessBoardSquare *square_;
 		ChessBoard* board_;
 		
@@ -29,9 +30,11 @@ class ChessPiece
 		bool captured();
 		void isCaptured();
 		bool hasMoved();
+		bool enPassant();
+		void reset(); //used to reset the hasMoved conditions on pieces after their initial placement on the board
 		
 		virtual void move(ChessBoardSquare *dest);
-		void reset(); //used to reset the hasMoved conditions on pieces after their initial placement on the board
+		virtual void refresh();
 		virtual vector<int> legalMoves() = 0;
 		
 };
@@ -42,6 +45,8 @@ class ChessPiece_Pawn : public ChessPiece
 		ChessPiece_Pawn(ChessBoard *board, char color);
 		~ChessPiece_Pawn();
 		vector<int> legalMoves();
+		void move(ChessBoardSquare*);
+		void refresh();
 	private:
 		ChessPiece *promoted_piece;
 };

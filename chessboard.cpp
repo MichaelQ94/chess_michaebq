@@ -103,6 +103,20 @@ bool ChessBoard::whiteToMove()
 void ChessBoard::changeTurn()
 {
 	whiteToMove_ = !whiteToMove_;
+	if(whiteToMove_)
+	{
+		for(int i = 0; i < 8; ++i)
+		{
+			whitePieces_[i]->refresh();
+		}
+	}
+	else
+	{
+		for(int i = 0; i < 8; ++i)
+		{
+			blackPieces_[i]->refresh();
+		}
+	}
 }
 
 ChessBoardSquare* ChessBoard::square(int index)

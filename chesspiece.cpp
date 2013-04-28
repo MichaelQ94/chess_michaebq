@@ -10,6 +10,7 @@ ChessPiece::ChessPiece(ChessBoard *board, char type, char color, int value)
 	square_ = NULL;
 	captured_ = false;
 	hasMoved_ = false;
+	enPassant_ = false;
 	
 }
 
@@ -45,9 +46,19 @@ bool ChessPiece::hasMoved()
 	return hasMoved_;
 }
 
+bool ChessPiece::enPassant()
+{
+	return enPassant_;
+}
+
 void ChessPiece::reset()
 {
 	hasMoved_ = false;
+}
+
+void ChessPiece::refresh()
+{
+	
 }
 
 void ChessPiece::move(ChessBoardSquare *dest)

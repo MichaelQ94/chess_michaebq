@@ -187,6 +187,24 @@ void GraphicsWindow::castleQueenSide()
 	dehighlight();
 }
 
+void GraphicsWindow::enPassantCapture(GUISquare* gsquare)
+{
+	if(selectedPiece_->color() == 'W' && 
+		guisquares_[gsquare->index() - 8]->guiPiece() != NULL &&
+		guisquares_[gsquare->index() - 8]->guiPiece()->enPassant())
+	{
+		capturePiece(guisquares_[gsquare->index() - 8]->guiPiece());
+		guisquares_[gsquare->index() - 8]->setPiece(NULL);
+	}
+	else if(selectedPiece_->color() == 'B' &&
+		guisquares_[gsquare->index() + 8]->guiPiece() != NULL && 
+		guisquares_[gsquare->index() + 8]->guiPiece()->enPassant())
+	{
+		capturePiece(guisquares_[gsquare->index() + 8]->guiPiece());
+		guisquares_[gsquare->index() + 8]->setPiece(NULL);
+	}
+}
+
 GraphicsWindow::~GraphicsWindow()
 {
 	for(int i = 0; i < 64; ++i)

@@ -50,6 +50,12 @@ void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)
 				return;
 			}
 		}
+		
+		//if en passant
+		if(gw_->selectedPiece()->type() == 'P' && gw_->selectedSquare()->index() % 8 != index() % 8)
+		{
+			gw_->enPassantCapture(this);
+		}
 		gw_->selectedPiece()->move(this);
 		gw_->deselectPiece();
 		gw_->selectedSquare()->resetColor();

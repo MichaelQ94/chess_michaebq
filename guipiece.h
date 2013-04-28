@@ -41,6 +41,7 @@ class GUIPiece : public QGraphicsPixmapItem
 		int getY();
 		char color();
 		char type();
+		bool enPassant();
 	
 };
 #endif

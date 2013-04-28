@@ -42,6 +42,7 @@ class GUISquare : public QGraphicsRectItem
 		void setPiece(GUIPiece* gpiece);
 		void clear();
 		int index();
+		
 		GUIPiece* guiPiece();
 		ChessBoardSquare* square();
 		
