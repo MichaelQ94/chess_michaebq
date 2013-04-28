@@ -39,6 +39,8 @@ class ChessPiece
 		virtual vector<int> legalMoves() = 0;
 		virtual void promote(char type);
 		
+		virtual bool inCheck();
+		virtual bool checkForCheck();
 };
 
 class ChessPiece_Pawn : public ChessPiece
@@ -89,8 +91,7 @@ class ChessPiece_King : public ChessPiece
 		vector<int> legalMoves();
 		void move(ChessBoardSquare *dest);
 		bool inCheck();
-		void check();
-		void outOfCheck();
+		bool checkForCheck();
 	private:
 		bool inCheck_;
 };

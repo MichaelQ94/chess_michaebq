@@ -109,6 +109,8 @@ void ChessBoard::changeTurn()
 		{
 			whitePieces_[i]->refresh();
 		}
+		whitePieces_[15]->checkForCheck();
+		std::cout << whiteCheck() << std::endl;
 	}
 	else
 	{
@@ -116,6 +118,7 @@ void ChessBoard::changeTurn()
 		{
 			blackPieces_[i]->refresh();
 		}
+		blackPieces_[15]->checkForCheck();
 	}
 }
 
@@ -132,6 +135,16 @@ ChessPiece* ChessBoard::whitePiece(int index)
 ChessPiece* ChessBoard::blackPiece(int index)
 {
 	return blackPieces_[index];
+}
+
+bool ChessBoard::whiteCheck()
+{
+	return whitePieces_[15]->inCheck();
+}
+
+bool ChessBoard::blackCheck()
+{
+	return blackPieces_[15]->inCheck();
 }
 
 ChessBoard::~ChessBoard()

@@ -76,7 +76,7 @@ vector<int> ChessPiece_Queen::legalMoves()
 	
 	//left
 	index = square_->index() - 1;
-	while(index >= 0 && index % 8 != 0)
+	while(index >= 0 && index % 8 != 7)
 	{
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece

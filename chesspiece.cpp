@@ -73,6 +73,16 @@ void ChessPiece::refresh()
 	
 }
 
+bool ChessPiece::inCheck()
+{
+	return false;
+}
+
+bool ChessPiece::checkForCheck()
+{
+	return false;
+}
+
 void ChessPiece::promote(char type)
 {
 	type = type;

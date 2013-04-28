@@ -101,7 +101,14 @@ void ChessPiece_Pawn::refresh()
 void ChessPiece_Pawn::move(ChessBoardSquare *dest)
 {
 	if(square_ != NULL)
+	{
 		square_->clear();
+		if(!hasMoved_ && ((piece_color == 'W' && dest->index() == square_->index() + 16) ||
+		(piece_color == 'B' && dest->index() == square_->index() - 16)))
+		{
+			enPassant_ = true;
+		}
+	}
 	if(dest->getPiece() != NULL)
 		dest->getPiece()->isCaptured();
 	//en passant captures
@@ -119,8 +126,6 @@ void ChessPiece_Pawn::move(ChessBoardSquare *dest)
 	}
 	square_ = dest;
 	dest->setPiece(this);
-	if(!hasMoved_)
-		enPassant_ = true;
 	hasMoved_ = true;
 	if(promoted_piece != NULL)
 	{
