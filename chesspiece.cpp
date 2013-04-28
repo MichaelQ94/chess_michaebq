@@ -9,9 +9,6 @@ ChessPiece::ChessPiece(ChessBoard *board, char type, char color, int value)
 	value_ = value;
 	square_ = NULL;
 	captured_ = false;
-	hasMoved_ = false;
-	enPassant_ = false;
-	
 }
 
 void ChessPiece::copyData(ChessPiece *piece)
@@ -22,8 +19,6 @@ void ChessPiece::copyData(ChessPiece *piece)
 	value_ = piece->value_;
 	square_ = piece->square_;
 	captured_ = false;
-	hasMoved_ = false;
-	enPassant_ = false;
 }
 
 char ChessPiece::type()
@@ -55,17 +50,16 @@ void ChessPiece::isCaptured()
 
 bool ChessPiece::hasMoved()
 {
-	return hasMoved_;
+	return true;
 }
 
 bool ChessPiece::enPassant()
 {
-	return enPassant_;
+	return false;
 }
 
 void ChessPiece::reset()
 {
-	hasMoved_ = false;
 }
 
 void ChessPiece::refresh()
@@ -96,5 +90,4 @@ void ChessPiece::move(ChessBoardSquare *dest)
 		dest->getPiece()->isCaptured();
 	square_ = dest;
 	dest->setPiece(this);
-	hasMoved_ = true;
 }

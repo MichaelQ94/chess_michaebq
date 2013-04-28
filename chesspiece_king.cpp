@@ -4,6 +4,7 @@ using namespace std;
 ChessPiece_King::ChessPiece_King(ChessBoard *board, char color) : ChessPiece(board, 'K', color, -1)
 {
 	inCheck_ = false;
+	hasMoved_ = false;
 }
 
 vector<int> ChessPiece_King::legalMoves()
@@ -109,6 +110,11 @@ vector<int> ChessPiece_King::legalMoves()
 bool ChessPiece_King::inCheck()
 {
 	return inCheck_;
+}
+
+void ChessPiece_King::reset()
+{
+	hasMoved_ = false;
 }
 
 bool ChessPiece_King::checkForCheck()
@@ -345,6 +351,11 @@ bool ChessPiece_King::checkForCheck()
 	
 	inCheck_ = false;
 	return false; //this is only reached if all the possibilites have been searched and no check was detected
+}
+
+bool ChessPiece_King::hasMoved()
+{
+	return hasMoved_;
 }
 
 void ChessPiece_King::move(ChessBoardSquare *dest)

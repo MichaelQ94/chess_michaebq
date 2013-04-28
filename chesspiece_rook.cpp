@@ -3,7 +3,7 @@ using namespace std;
 
 ChessPiece_Rook::ChessPiece_Rook(ChessBoard *board, char color) : ChessPiece(board, 'R', color, 5)
 {
-
+	hasMoved_ = false;
 }
 
 vector<int> ChessPiece_Rook::legalMoves()
@@ -63,4 +63,25 @@ vector<int> ChessPiece_Rook::legalMoves()
 	}
 	
 	return legalMoves;
+}
+
+void ChessPiece_Rook::move(ChessBoardSquare *dest)
+{
+	if(square_ != NULL)
+		square_->clear();
+	if(dest->getPiece() != NULL)
+		dest->getPiece()->isCaptured();
+	square_ = dest;
+	dest->setPiece(this);
+	hasMoved_ = true;
+}
+
+bool ChessPiece_Rook::hasMoved()
+{
+	return hasMoved_;
+}
+
+void ChessPiece_Rook::reset()
+{
+	hasMoved_ = false;
 }

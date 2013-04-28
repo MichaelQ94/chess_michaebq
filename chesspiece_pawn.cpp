@@ -4,6 +4,8 @@ using namespace std;
 ChessPiece_Pawn::ChessPiece_Pawn(ChessBoard *board, char color) : ChessPiece(board, 'P', color, 1)
 {
 	promoted_piece = NULL;
+	hasMoved_ = false;
+	enPassant_ = false;
 }
 
 vector<int> ChessPiece_Pawn::legalMoves()
@@ -96,6 +98,21 @@ vector<int> ChessPiece_Pawn::legalMoves()
 void ChessPiece_Pawn::refresh()
 {
 	enPassant_ = false;
+}
+
+bool ChessPiece_Pawn::hasMoved()
+{
+	return hasMoved_;
+}
+
+void ChessPiece_Pawn::reset()
+{
+	hasMoved_ = false;
+}
+
+bool ChessPiece_Pawn::enPassant()
+{
+	return enPassant_;
 }
 
 void ChessPiece_Pawn::move(ChessBoardSquare *dest)
