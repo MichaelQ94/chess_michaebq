@@ -8,6 +8,31 @@ ChessPiece_Pawn::ChessPiece_Pawn(ChessBoard *board, char color) : ChessPiece(boa
 	enPassant_ = false;
 }
 
+ChessPiece_Pawn::ChessPiece_Pawn(ChessBoard *board, ChessPiece_Pawn *piece) : ChessPiece(board, piece)
+{
+	hasMoved_ = piece->hasMoved_;
+	enPassant_ = piece->enPassant_;
+	if(piece->promoted_piece != NULL)
+	{
+		switch(piece_type)
+		{
+		case 'N':
+			promoted_piece = new ChessPiece_Knight(board_, piece_color);
+			break;
+		case 'B':
+			promoted_piece = new ChessPiece_Bishop(board_, piece_color);
+			break;
+		case 'R':
+			promoted_piece = new ChessPiece_Rook(board_, piece_color);
+			break;
+		case 'Q':
+			promoted_piece = new ChessPiece_Queen(board_, piece_color);
+		}
+		
+		promoted_piece->copyData(this);
+	}
+}
+
 vector<int> ChessPiece_Pawn::legalMoves()
 {
 	vector<int> legalMoves;

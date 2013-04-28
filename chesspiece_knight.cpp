@@ -5,6 +5,9 @@ ChessPiece_Knight::ChessPiece_Knight(ChessBoard *board, char color) : ChessPiece
 {
 }
 
+ChessPiece_Knight::ChessPiece_Knight(ChessBoard *board, ChessPiece_Knight *piece) : ChessPiece(board, piece)
+{
+}
 vector<int> ChessPiece_Knight::legalMoves()
 {
 	vector<int> legalMoves;

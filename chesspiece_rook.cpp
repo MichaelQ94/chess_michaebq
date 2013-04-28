@@ -6,6 +6,11 @@ ChessPiece_Rook::ChessPiece_Rook(ChessBoard *board, char color) : ChessPiece(boa
 	hasMoved_ = false;
 }
 
+ChessPiece_Rook::ChessPiece_Rook(ChessBoard *board, ChessPiece_Rook *piece) : ChessPiece(board, piece)
+{
+	hasMoved_ = piece->hasMoved_;
+}
+
 vector<int> ChessPiece_Rook::legalMoves()
 {
 	vector<int> legalMoves;

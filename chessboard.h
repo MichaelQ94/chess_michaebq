@@ -29,6 +29,7 @@ class ChessBoard
 		//15: king
 	public:
 		ChessBoard();
+		ChessBoard(ChessBoard *board);
 		ChessBoardSquare* square(int index);
 		ChessPiece* whitePiece(int index);
 		ChessPiece* blackPiece(int index);

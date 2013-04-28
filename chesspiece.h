@@ -22,11 +22,13 @@ class ChessPiece
 		
 	public:
 		ChessPiece(ChessBoard *board, char type, char color, int value);
+		ChessPiece(ChessBoard *board, ChessPiece *piece);
 		char type();
 		char color();
 		int value();
 		bool captured();
 		void isCaptured();
+		ChessBoardSquare* square();
 		virtual bool hasMoved();
 		virtual bool enPassant();
 		virtual void reset(); //used to reset the hasMoved conditions on pieces after their initial placement on the board
@@ -45,6 +47,7 @@ class ChessPiece_Pawn : public ChessPiece
 {
 	public:
 		ChessPiece_Pawn(ChessBoard *board, char color);
+		ChessPiece_Pawn(ChessBoard *board, ChessPiece_Pawn *piece);
 		~ChessPiece_Pawn();
 		vector<int> legalMoves();
 		void move(ChessBoardSquare*);
@@ -63,6 +66,7 @@ class ChessPiece_Knight : public ChessPiece
 {
 	public:
 		ChessPiece_Knight(ChessBoard *board, char color);
+		ChessPiece_Knight(ChessBoard *board, ChessPiece_Knight *piece);
 		vector<int> legalMoves();
 };
 
@@ -70,6 +74,7 @@ class ChessPiece_Bishop : public ChessPiece
 {
 	public:
 		ChessPiece_Bishop(ChessBoard *board, char color);
+		ChessPiece_Bishop(ChessBoard *board, ChessPiece_Bishop *piece);
 		vector<int> legalMoves();
 };
 
@@ -77,6 +82,7 @@ class ChessPiece_Rook : public ChessPiece
 {
 	public:
 		ChessPiece_Rook(ChessBoard *board, char color);
+		ChessPiece_Rook(ChessBoard *board, ChessPiece_Rook *piece);
 		vector<int> legalMoves();
 		void move(ChessBoardSquare *dest);
 		bool hasMoved();
@@ -89,6 +95,7 @@ class ChessPiece_Queen : public ChessPiece
 {
 	public:
 		ChessPiece_Queen(ChessBoard *board, char color);
+		ChessPiece_Queen(ChessBoard *board, ChessPiece_Queen *piece);
 		vector<int> legalMoves();
 };
 
@@ -96,6 +103,7 @@ class ChessPiece_King : public ChessPiece
 {
 	public:
 		ChessPiece_King(ChessBoard *board, char color);
+		ChessPiece_King(ChessBoard *board, ChessPiece_King *piece);
 		vector<int> legalMoves();
 		void move(ChessBoardSquare *dest);
 		bool inCheck();

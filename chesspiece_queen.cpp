@@ -5,6 +5,10 @@ ChessPiece_Queen::ChessPiece_Queen(ChessBoard *board, char color) : ChessPiece(b
 {	
 }
 
+ChessPiece_Queen::ChessPiece_Queen(ChessBoard *board, ChessPiece_Queen *piece) : ChessPiece(board, piece)
+{
+}
+
 vector<int> ChessPiece_Queen::legalMoves()
 {
 	vector<int> legalMoves;

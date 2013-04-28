@@ -11,6 +11,16 @@ ChessPiece::ChessPiece(ChessBoard *board, char type, char color, int value)
 	captured_ = false;
 }
 
+ChessPiece::ChessPiece(ChessBoard *board, ChessPiece *piece)
+{
+	board_ = piece->board_;
+	square_ = piece->square_;
+	piece_type = piece->piece_type;
+	piece_color = piece->piece_color;
+	value_ = piece->value_;
+	captured_ = piece->captured_;
+}
+
 void ChessPiece::copyData(ChessPiece *piece)
 {
 	board_ = piece->board_;
@@ -75,6 +85,11 @@ bool ChessPiece::inCheck()
 bool ChessPiece::checkForCheck()
 {
 	return false;
+}
+
+ChessBoardSquare* ChessPiece::square()
+{
+	return square_;
 }
 
 void ChessPiece::promote(char type)

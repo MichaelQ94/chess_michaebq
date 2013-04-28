@@ -5,6 +5,10 @@ ChessPiece_Bishop::ChessPiece_Bishop(ChessBoard *board, char color) : ChessPiece
 {
 }
 
+ChessPiece_Bishop::ChessPiece_Bishop(ChessBoard *board, ChessPiece_Bishop *piece) : ChessPiece(board, piece)
+{
+}
+
 vector<int> ChessPiece_Bishop::legalMoves()
 {
 	vector<int> legalMoves;

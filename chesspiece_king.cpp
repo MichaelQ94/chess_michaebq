@@ -7,6 +7,12 @@ ChessPiece_King::ChessPiece_King(ChessBoard *board, char color) : ChessPiece(boa
 	hasMoved_ = false;
 }
 
+ChessPiece_King::ChessPiece_King(ChessBoard *board, ChessPiece_King *piece) : ChessPiece(board, piece)
+{
+	inCheck_ = piece->inCheck_;
+	hasMoved_ = piece->hasMoved_;
+}
+
 vector<int> ChessPiece_King::legalMoves()
 {
 	vector<int> legalMoves;
