@@ -38,6 +38,7 @@ class GUIPiece : public QGraphicsPixmapItem
 	public:
 		GUIPiece(ChessPiece *piece, GraphicsWindow *gw);
 		vector<int> legalMoves();
+		void transcribeMove(GUISquare *dest, bool cap);
 		void cmove(GUISquare *dest);
 		void move(GUISquare *dest);
 		void reset();

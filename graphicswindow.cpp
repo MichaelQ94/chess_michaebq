@@ -1,7 +1,8 @@
 #include "graphicswindow.h"
 
-GraphicsWindow::GraphicsWindow()
+GraphicsWindow::GraphicsWindow(MainWindow *main, QString whiteName, QString blackName, int time)
 {
+	mw_ = main;
 	timerCount_ = 0;
 	selectedPiece_ = NULL;
 	selectedSquare_ = NULL;
@@ -14,7 +15,7 @@ GraphicsWindow::GraphicsWindow()
 	connect(timer, SIGNAL(timeout()), this, SLOT(handleTimer()));
 	timer->start();
 	
-	view->setFixedSize(500, 500);
+	view->setFixedSize(500, 550);
 	
 	int width = 60;
 	//display the board
@@ -101,6 +102,32 @@ GraphicsWindow::GraphicsWindow()
 	blackguipieces_[13]->reset();
 	
 	
+	whiteName_ = new QGraphicsSimpleTextItem(whiteName);
+	whiteName_->setPos(120, 485);
+	whiteScore_ = new QGraphicsSimpleTextItem("Score: " + QString::number(0));
+	whiteScore_->setPos(120, 500);
+	whiteRemaining_ = new QGraphicsSimpleTextItem("Remaining: " + QString::number(39));
+	whiteRemaining_->setPos(120, 515);
+	whiteTime_ = new QGraphicsSimpleTextItem("Time: " + QString::number(time) + ":00");
+	whiteTime_->setPos(120, 530);
+	
+	blackName_ = new QGraphicsSimpleTextItem(blackName);
+	blackName_->setPos(360, 485);
+	blackScore_ = new QGraphicsSimpleTextItem("Score: " + QString::number(0));
+	blackScore_->setPos(360, 500);
+	blackRemaining_ = new QGraphicsSimpleTextItem("Remaining: " + QString::number(39));
+	blackRemaining_->setPos(360, 515);
+	blackTime_ = new QGraphicsSimpleTextItem("Time: " + QString::number(time) + ":00");
+	blackTime_->setPos(360, 530);
+	
+	scene->addItem(whiteName_);
+	scene->addItem(blackName_);
+	scene->addItem(whiteScore_);
+	scene->addItem(whiteRemaining_);
+	scene->addItem(whiteTime_);
+	scene->addItem(blackScore_);
+	scene->addItem(blackRemaining_);
+	scene->addItem(blackTime_);
 }
 
 QWidget* GraphicsWindow::getViewPort()
@@ -160,6 +187,31 @@ void GraphicsWindow::deselectSquare()
 void GraphicsWindow::changeTurn()
 {
 	board_.changeTurn();
+	if(board_.whiteToMove() && board_.whiteCheckMate())
+	{
+		move_ += "#";
+		QMessageBox errorMessage;
+		errorMessage.setText("Checkmate! Black wins.");
+		errorMessage.exec();
+		return;
+	}
+	else if(!board_.whiteToMove() && board_.blackCheckMate())
+	{
+		move_ += "#";
+		QMessageBox errorMessage;
+		errorMessage.setText("Checkmate! White wins.");
+		errorMessage.exec();
+		return;
+	}
+	else if(board_.staleMate())
+	{
+		QMessageBox errorMessage;
+		errorMessage.setText("Stalemate!");
+		errorMessage.exec();
+		return;
+	}
+	mw_->printMove(move_);
+	move_.clear();
 }
 
 void GraphicsWindow::capturePiece(GUIPiece *piece)
@@ -172,6 +224,16 @@ bool GraphicsWindow::whiteToMove()
 	return board_.whiteToMove();
 }
 
+void GraphicsWindow::setMove(QString move)
+{
+	move_ = move;
+}
+
+QString GraphicsWindow::getMove()
+{
+	return move_;
+}
+
 void GraphicsWindow::castleKingSide()
 {
 	selectedPiece_->move(guisquares_[selectedSquare_->index() + 2]);
@@ -179,8 +241,9 @@ void GraphicsWindow::castleKingSide()
 	selectedPiece_ = NULL;
 	selectedSquare_->resetColor();
 	selectedSquare_ = NULL;
-	changeTurn();
 	dehighlight();
+	move_ = QString("O-O");
+	changeTurn();
 }
 
 void GraphicsWindow::castleQueenSide()
@@ -190,18 +253,28 @@ void GraphicsWindow::castleQueenSide()
 	selectedPiece_ = NULL;
 	selectedSquare_->resetColor();
 	selectedSquare_ = NULL;
-	changeTurn();
 	dehighlight();
+	move_ = QString("O-O-O");
+	changeTurn();
 }
 
 void GraphicsWindow::enPassantCapture(GUISquare* gsquare)
 {
+	if(gsquare->guiPiece() != NULL)
+	{
+		return;
+	}
+	QString move;
+	move += selectedSquare_->getCoordinates();
+	move += "x";	
+	
 	if(selectedPiece_->color() == 'W' && 
 		guisquares_[gsquare->index() - 8]->guiPiece() != NULL &&
 		guisquares_[gsquare->index() - 8]->guiPiece()->enPassant())
 	{
 		capturePiece(guisquares_[gsquare->index() - 8]->guiPiece());
 		guisquares_[gsquare->index() - 8]->setPiece(NULL);
+		move += guisquares_[gsquare->index() - 8]->getCoordinates();
 	}
 	else if(selectedPiece_->color() == 'B' &&
 		guisquares_[gsquare->index() + 8]->guiPiece() != NULL && 
@@ -209,7 +282,10 @@ void GraphicsWindow::enPassantCapture(GUISquare* gsquare)
 	{
 		capturePiece(guisquares_[gsquare->index() + 8]->guiPiece());
 		guisquares_[gsquare->index() + 8]->setPiece(NULL);
+		move += guisquares_[gsquare->index() + 8]->getCoordinates();
 	}
+	
+	move_ = move;
 }
 
 void GraphicsWindow::promote(GUIPiece *gpiece)

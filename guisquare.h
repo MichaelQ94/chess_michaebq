@@ -14,6 +14,7 @@
 #include <QString>
 #include <vector>
 #include <QGraphicsSceneMouseEvent>
+#include <QString>
 #include "graphicswindow.h"
 #include "guipiece.h"
 #include "chessboardsquare.h"
@@ -30,9 +31,11 @@ class GUISquare : public QGraphicsRectItem
 		Qt::GlobalColor color_;
 		int x_, y_;
 		bool highlighted_;
+		QString coordinates_;
 	
 	public:
 		GUISquare(GraphicsWindow*, ChessBoardSquare*, int x, int y, int w);
+		QString getCoordinates();
 		void setColor(Qt::GlobalColor color);
 		void highlight();
 		bool highlighted();

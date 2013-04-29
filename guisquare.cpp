@@ -8,6 +8,40 @@ GUISquare::GUISquare(GraphicsWindow *gw, ChessBoardSquare *square, int x, int y,
 	y_ = y;
 	gpiece_ = NULL;
 	highlighted_ = false;
+	
+	switch(square_->index() % 8)
+	{
+		case 0:
+			coordinates_ += "a";
+			break;
+		case 1:
+			coordinates_ += "b";
+			break;
+		case 2:
+			coordinates_ += "c";
+			break;
+		case 3:
+			coordinates_ += "d";
+			break;
+		case 4:
+			coordinates_ += "e";
+			break;
+		case 5:
+			coordinates_ += "f";
+			break;
+		case 6:
+			coordinates_ += "g";
+			break;
+		case 7:
+			coordinates_ += "h";
+	}
+	
+	coordinates_ += QString::number((square_->index() / 8) + 1);
+}
+
+QString GUISquare::getCoordinates()
+{
+	return coordinates_;
 }
 
 void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)

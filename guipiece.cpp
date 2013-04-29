@@ -128,8 +128,30 @@ void GUIPiece::promote(char type)
 	setPixmap(QString(filename.c_str()));
 }
 
+void GUIPiece::transcribeMove(GUISquare *dest, bool cap)
+{
+	QString move;
+	if(piece_->type() != 'P')
+	{
+		move += piece_->type();
+	}
+	move += gsquare_->getCoordinates();
+	if(cap)
+	{
+		move += "x";
+	}
+	else
+	{
+		move += "-";
+	}
+	move += dest->getCoordinates();
+	gw_->setMove(move);
+}
+
 void GUIPiece::move(GUISquare *dest)
 {
+	if(gw_->getMove().isEmpty())
+		transcribeMove(dest, dest->guiPiece() != NULL);
 	destx = dest->getX();
 	desty = dest->getY();
 	vx_ = (destx - x_) / 60;
@@ -147,7 +169,6 @@ void GUIPiece::move(GUISquare *dest)
 		gsquare_->clear();
 	gsquare_ = dest;
 	gsquare_->setPiece(this);
-
 }
 
 void GUIPiece::cmove(GUISquare *dest)

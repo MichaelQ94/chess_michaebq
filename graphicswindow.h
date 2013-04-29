@@ -11,12 +11,16 @@
 #include <QGraphicsItemAnimation>
 #include <QPushButton>
 #include <QPixmap>
+#include <QGraphicsSimpleTextItem>
 #include <QGraphicsScene>
 #include <QMessageBox>
+#include <QString>
 #include "guisquare.h"
 #include "guipiece.h"
 #include "chessboard.h"
+#include "mainwindow.h"
 
+class MainWindow;
 class GUISquare;
 class GUIPiece;
 
@@ -25,11 +29,13 @@ class GraphicsWindow : public QWidget
 	Q_OBJECT
 	
 	private:
+		MainWindow *mw_;
 		ChessBoard board_;
 		QGraphicsScene *scene;
 		QGraphicsView *view;
 		QTimer *timer;
 		int timerCount_;
+		QString move_;
 		
 		GUISquare* guisquares_[64];
 		GUIPiece* whiteguipieces_[16];
@@ -39,10 +45,15 @@ class GraphicsWindow : public QWidget
 		GUISquare* selectedSquare_;
 		GUIPiece* slidingPiece_;
 		GUIPiece* slidingPiece2_;//used only for sliding 2 pieces at a time (castling)
+		
+		QGraphicsSimpleTextItem *whiteName_, *whiteScore_, *whiteRemaining_, *whiteTime_;
+		QGraphicsSimpleTextItem *blackName_, *blackScore_, *blackRemaining_, *blackTime_;
 	
 	public:
-		GraphicsWindow();
+		GraphicsWindow(MainWindow *main, QString whiteName, QString blackName, int time);
 		~GraphicsWindow();
+		void setMove(QString move);
+		QString getMove();
 		void setSelectedPiece(GUIPiece* gpiece);
 		void setSelectedSquare(GUISquare* gsquare);
 		void deselectPiece();
