@@ -22,6 +22,7 @@ game_michaebq.pro
 moc_mainwindow.cpp
 moc_graphicswindow.cpp
 moc_guipiece.cpp
+moc_formwindow.cpp
 
 # Project-specific executables
 game_michaebq
