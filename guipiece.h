@@ -31,10 +31,13 @@ class GUIPiece : public QGraphicsPixmapItem
 		ChessPiece *piece_;
 		GUISquare *gsquare_;
 		int x_, y_;
+		int vx_, vy_;
+		int destx, desty;
 	
 	public:
 		GUIPiece(ChessPiece *piece, GraphicsWindow *gw);
 		vector<int> legalMoves();
+		void cmove(GUISquare *dest);
 		void move(GUISquare *dest);
 		void reset();
 		int getX();
@@ -42,6 +45,7 @@ class GUIPiece : public QGraphicsPixmapItem
 		char color();
 		char type();
 		bool enPassant();
+		void slide();
 		void promote(char type);
 	
 };

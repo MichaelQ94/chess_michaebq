@@ -128,12 +128,46 @@ void GUIPiece::promote(char type)
 
 void GUIPiece::move(GUISquare *dest)
 {
+	destx = dest->getX();
+	desty = dest->getY();
+	vx_ = (destx - x_) / 60;
+	vy_ = (desty - y_) / 60;
 	piece_->move(dest->square());
-	if(dest->guiPiece() != NULL)
+	if(dest->guiPiece() != NULL) //capture the piece occupying the square if there is one
+		gw_->capturePiece(dest->guiPiece());
+	
+	if(gw_->slidingPiece() == NULL)
+		gw_->slidePiece(this);
+	else
+		gw_->slidePiece2(this);
+	
+	if(gsquare_ != NULL)
+		gsquare_->clear();
+	gsquare_ = dest;
+	gsquare_->setPiece(this);
+}
+
+void GUIPiece::cmove(GUISquare *dest)
+{
+	piece_->move(dest->square());
+	x_ = dest->getX();
+	y_ = dest->getY();
+	if(dest->guiPiece() != NULL) //capture the piece occupying the square if there is one
 		gw_->capturePiece(dest->guiPiece());
 	setPos(dest->getX(), dest->getY()); //the move
 	if(gsquare_ != NULL)
 		gsquare_->clear();
 	gsquare_ = dest;
 	gsquare_->setPiece(this);
+}
+
+void GUIPiece::slide()
+{
+	x_ += vx_;
+	y_ += vy_;
+	setPos(x_, y_);
+	if(x_ == destx && y_ == desty && gw_->slidingPiece() == this)
+		gw_->stopSliding();
+	else if(x_ == destx && y_ == desty && gw_->slidingPiece2() == this)
+		gw_->stopSliding2();
 }

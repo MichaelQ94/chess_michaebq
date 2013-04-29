@@ -28,6 +28,8 @@ class GraphicsWindow : public QWidget
 		ChessBoard board_;
 		QGraphicsScene *scene;
 		QGraphicsView *view;
+		QTimer *timer;
+		int timerCount_;
 		
 		GUISquare* guisquares_[64];
 		GUIPiece* whiteguipieces_[16];
@@ -35,6 +37,8 @@ class GraphicsWindow : public QWidget
 		
 		GUIPiece* selectedPiece_;
 		GUISquare* selectedSquare_;
+		GUIPiece* slidingPiece_;
+		GUIPiece* slidingPiece2_;//used only for sliding 2 pieces at a time (castling)
 	
 	public:
 		GraphicsWindow();
@@ -45,6 +49,12 @@ class GraphicsWindow : public QWidget
 		void deselectSquare();
 		GUIPiece* selectedPiece();
 		GUISquare* selectedSquare();
+		GUIPiece* slidingPiece();
+		GUIPiece* slidingPiece2();
+		void slidePiece(GUIPiece *piece);
+		void slidePiece2(GUIPiece *piece);
+		void stopSliding();
+		void stopSliding2();
 		void highlightSquares(vector<int> squares);
 		void dehighlight();
 		void capturePiece(GUIPiece *piece);
@@ -56,5 +66,7 @@ class GraphicsWindow : public QWidget
 		void promote(GUIPiece* gpiece);
 		QWidget* getViewPort();
 		
+	public slots:
+		void handleTimer();	
 };
 #endif

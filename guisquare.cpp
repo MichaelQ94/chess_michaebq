@@ -12,6 +12,9 @@ GUISquare::GUISquare(GraphicsWindow *gw, ChessBoardSquare *square, int x, int y,
 
 void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)
 {
+	//must wait until animation is done before making new moves
+	if(gw_->slidingPiece() != NULL || gw_->slidingPiece2() != NULL)
+		return;
 	c->pos();
 	if(gw_->selectedPiece() == NULL && gpiece_ != NULL) //no selected piece and this square is occupied
 	{

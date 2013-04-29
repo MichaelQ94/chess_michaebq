@@ -2,10 +2,17 @@
 
 GraphicsWindow::GraphicsWindow()
 {
+	timerCount_ = 0;
 	selectedPiece_ = NULL;
 	selectedSquare_ = NULL;
+	slidingPiece_ = NULL;
+	slidingPiece2_ = NULL;
 	scene = new QGraphicsScene(this);
 	view = new QGraphicsView(scene);
+	timer = new QTimer();
+	timer->setInterval(2);
+	connect(timer, SIGNAL(timeout()), this, SLOT(handleTimer()));
+	timer->start();
 	
 	view->setFixedSize(500, 500);
 	
@@ -37,42 +44,42 @@ GraphicsWindow::GraphicsWindow()
 	}
 	//place the GUIPieces on the board
 	
-	whiteguipieces_[12]->move(guisquares_[0]); //white left rook
-	whiteguipieces_[8]->move(guisquares_[1]); //white left knight
-	whiteguipieces_[10]->move(guisquares_[2]); //white left bishop
-	whiteguipieces_[14]->move(guisquares_[3]); //white queen
-	whiteguipieces_[15]->move(guisquares_[4]); //white king
-	whiteguipieces_[11]->move(guisquares_[5]); //white right bishop
-	whiteguipieces_[9]->move(guisquares_[6]); //white right knight
-	whiteguipieces_[13]->move(guisquares_[7]); //white right rook
+	whiteguipieces_[12]->cmove(guisquares_[0]); //white left rook
+	whiteguipieces_[8]->cmove(guisquares_[1]); //white left knight
+	whiteguipieces_[10]->cmove(guisquares_[2]); //white left bishop
+	whiteguipieces_[14]->cmove(guisquares_[3]); //white queen
+	whiteguipieces_[15]->cmove(guisquares_[4]); //white king
+	whiteguipieces_[11]->cmove(guisquares_[5]); //white right bishop
+	whiteguipieces_[9]->cmove(guisquares_[6]); //white right knight
+	whiteguipieces_[13]->cmove(guisquares_[7]); //white right rook
 	//white pawns
-	whiteguipieces_[0]->move(guisquares_[8]);
-	whiteguipieces_[1]->move(guisquares_[9]);
-	whiteguipieces_[2]->move(guisquares_[10]);
-	whiteguipieces_[3]->move(guisquares_[11]);
-	whiteguipieces_[4]->move(guisquares_[12]);
-	whiteguipieces_[5]->move(guisquares_[13]);
-	whiteguipieces_[6]->move(guisquares_[14]);
-	whiteguipieces_[7]->move(guisquares_[15]);
+	whiteguipieces_[0]->cmove(guisquares_[8]);
+	whiteguipieces_[1]->cmove(guisquares_[9]);
+	whiteguipieces_[2]->cmove(guisquares_[10]);
+	whiteguipieces_[3]->cmove(guisquares_[11]);
+	whiteguipieces_[4]->cmove(guisquares_[12]);
+	whiteguipieces_[5]->cmove(guisquares_[13]);
+	whiteguipieces_[6]->cmove(guisquares_[14]);
+	whiteguipieces_[7]->cmove(guisquares_[15]);
 	
 	//black pawns
-	blackguipieces_[0]->move(guisquares_[48]);
-	blackguipieces_[1]->move(guisquares_[49]);
-	blackguipieces_[2]->move(guisquares_[50]);
-	blackguipieces_[3]->move(guisquares_[51]);
-	blackguipieces_[4]->move(guisquares_[52]);
-	blackguipieces_[5]->move(guisquares_[53]);
-	blackguipieces_[6]->move(guisquares_[54]);
-	blackguipieces_[7]->move(guisquares_[55]);
+	blackguipieces_[0]->cmove(guisquares_[48]);
+	blackguipieces_[1]->cmove(guisquares_[49]);
+	blackguipieces_[2]->cmove(guisquares_[50]);
+	blackguipieces_[3]->cmove(guisquares_[51]);
+	blackguipieces_[4]->cmove(guisquares_[52]);
+	blackguipieces_[5]->cmove(guisquares_[53]);
+	blackguipieces_[6]->cmove(guisquares_[54]);
+	blackguipieces_[7]->cmove(guisquares_[55]);
 	
-	blackguipieces_[12]->move(guisquares_[56]); //black left rook
-	blackguipieces_[8]->move(guisquares_[57]); //black left knight
-	blackguipieces_[10]->move(guisquares_[58]); //black left bishop
-	blackguipieces_[14]->move(guisquares_[59]); //black queen
-	blackguipieces_[15]->move(guisquares_[60]); //black king
-	blackguipieces_[11]->move(guisquares_[61]); //black right bishop
-	blackguipieces_[9]->move(guisquares_[62]); //black right knight
-	blackguipieces_[13]->move(guisquares_[63]); //black right rook
+	blackguipieces_[12]->cmove(guisquares_[56]); //black left rook
+	blackguipieces_[8]->cmove(guisquares_[57]); //black left knight
+	blackguipieces_[10]->cmove(guisquares_[58]); //black left bishop
+	blackguipieces_[14]->cmove(guisquares_[59]); //black queen
+	blackguipieces_[15]->cmove(guisquares_[60]); //black king
+	blackguipieces_[11]->cmove(guisquares_[61]); //black right bishop
+	blackguipieces_[9]->cmove(guisquares_[62]); //black right knight
+	blackguipieces_[13]->cmove(guisquares_[63]); //black right rook
 	
 	//reset pieces which have conditions to detect if they have moved
 	//since placement on the board requires moving the pieces
@@ -208,6 +215,45 @@ void GraphicsWindow::enPassantCapture(GUISquare* gsquare)
 void GraphicsWindow::promote(GUIPiece *gpiece)
 {
 	gpiece->promote('Q');
+}
+
+GUIPiece* GraphicsWindow::slidingPiece()
+{
+	return slidingPiece_;
+}
+
+GUIPiece* GraphicsWindow::slidingPiece2()
+{
+	return slidingPiece2_;
+}
+
+void GraphicsWindow::slidePiece(GUIPiece *piece)
+{
+	slidingPiece_ = piece;
+}
+
+void GraphicsWindow::slidePiece2(GUIPiece *piece)
+{
+	slidingPiece2_ = piece;
+}
+
+void GraphicsWindow::stopSliding()
+{
+	slidingPiece_ = NULL;
+}
+
+void GraphicsWindow::stopSliding2()
+{
+	slidingPiece2_ = NULL;
+}
+
+void GraphicsWindow::handleTimer()
+{
+	++timerCount_;
+	if(slidingPiece_ != NULL)
+		slidingPiece_->slide();
+	if(slidingPiece2_ != NULL)
+		slidingPiece2_->slide();
 }
 
 GraphicsWindow::~GraphicsWindow()
