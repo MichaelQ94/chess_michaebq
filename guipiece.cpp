@@ -1,9 +1,10 @@
 #include "guipiece.h"
 
-GUIPiece::GUIPiece(ChessPiece *piece, GraphicsWindow *gw) : QGraphicsPixmapItem(QString("whitepawn.txt"), 0 , 0)
+GUIPiece::GUIPiece(ChessPiece *piece, GraphicsWindow *gw) : QGraphicsPixmapItem()
 {
 	piece_ = piece;
 	gw_ = gw;
+	pieceToCapture_ = NULL;
 	gsquare_ = NULL;
 	std::string filename = "";
 	
@@ -48,6 +49,7 @@ GUIPiece::GUIPiece(ChessPiece *piece, GraphicsWindow *gw) : QGraphicsPixmapItem(
 	
 	
 	setPixmap(QString(filename.c_str()));
+	setShapeMode(BoundingRectShape);
 }
 
 int GUIPiece::getX()
@@ -134,7 +136,7 @@ void GUIPiece::move(GUISquare *dest)
 	vy_ = (desty - y_) / 60;
 	piece_->move(dest->square());
 	if(dest->guiPiece() != NULL) //capture the piece occupying the square if there is one
-		gw_->capturePiece(dest->guiPiece());
+		pieceToCapture_ = dest->guiPiece();
 	
 	if(gw_->slidingPiece() == NULL)
 		gw_->slidePiece(this);
@@ -145,6 +147,7 @@ void GUIPiece::move(GUISquare *dest)
 		gsquare_->clear();
 	gsquare_ = dest;
 	gsquare_->setPiece(this);
+
 }
 
 void GUIPiece::cmove(GUISquare *dest)
@@ -170,4 +173,9 @@ void GUIPiece::slide()
 		gw_->stopSliding();
 	else if(x_ == destx && y_ == desty && gw_->slidingPiece2() == this)
 		gw_->stopSliding2();
+	if(pieceToCapture_ != NULL && collidesWithItem(pieceToCapture_))
+	{
+		gw_-> capturePiece(pieceToCapture_);
+		pieceToCapture_ = NULL;
+	}
 }

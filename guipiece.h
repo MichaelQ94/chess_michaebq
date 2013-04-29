@@ -30,6 +30,7 @@ class GUIPiece : public QGraphicsPixmapItem
 		GraphicsWindow *gw_;
 		ChessPiece *piece_;
 		GUISquare *gsquare_;
+		GUIPiece *pieceToCapture_;
 		int x_, y_;
 		int vx_, vy_;
 		int destx, desty;

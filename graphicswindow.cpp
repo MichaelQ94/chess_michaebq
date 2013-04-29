@@ -10,7 +10,7 @@ GraphicsWindow::GraphicsWindow()
 	scene = new QGraphicsScene(this);
 	view = new QGraphicsView(scene);
 	timer = new QTimer();
-	timer->setInterval(2);
+	timer->setInterval(4);
 	connect(timer, SIGNAL(timeout()), this, SLOT(handleTimer()));
 	timer->start();
 	
