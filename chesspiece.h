@@ -4,10 +4,12 @@
 #include <vector>
 #include "chessboard.h"
 #include "chessboardsquare.h"
+#include "chessmove.h"
 using namespace std;
 
 class ChessBoard;
 class ChessBoardSquare;
+class ChessMove;
 
 class ChessPiece
 {
@@ -35,6 +37,7 @@ class ChessPiece
 		void copyData(ChessPiece *piece);
 		
 		virtual void move(ChessBoardSquare *dest);
+		virtual void cmove(ChessBoardSquare *dest);
 		virtual void refresh();
 		virtual vector<int> legalMoves() = 0;
 		virtual void promote(char type);
@@ -51,6 +54,7 @@ class ChessPiece_Pawn : public ChessPiece
 		~ChessPiece_Pawn();
 		vector<int> legalMoves();
 		void move(ChessBoardSquare*);
+		void cmove(ChessBoardSquare*);
 		void refresh();
 		void promote(char type);
 		bool hasMoved();
@@ -85,6 +89,7 @@ class ChessPiece_Rook : public ChessPiece
 		ChessPiece_Rook(ChessBoard *board, ChessPiece_Rook *piece);
 		vector<int> legalMoves();
 		void move(ChessBoardSquare *dest);
+		void cmove(ChessBoardSquare*);
 		bool hasMoved();
 		void reset();
 	private:
@@ -106,6 +111,7 @@ class ChessPiece_King : public ChessPiece
 		ChessPiece_King(ChessBoard *board, ChessPiece_King *piece);
 		vector<int> legalMoves();
 		void move(ChessBoardSquare *dest);
+		void cmove(ChessBoardSquare*);
 		bool inCheck();
 		bool checkForCheck();
 		bool hasMoved();

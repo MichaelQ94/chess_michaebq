@@ -16,6 +16,7 @@ ChessPiece_King::ChessPiece_King(ChessBoard *board, ChessPiece_King *piece) : Ch
 vector<int> ChessPiece_King::legalMoves()
 {
 	vector<int> legalMoves;
+	ChessMove *move;
 	
 	//upper left
 	int index = square_->index() + 7;
@@ -23,7 +24,10 @@ vector<int> ChessPiece_King::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	//left
@@ -32,7 +36,10 @@ vector<int> ChessPiece_King::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	//lower left
@@ -41,7 +48,10 @@ vector<int> ChessPiece_King::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	//beneath
@@ -50,7 +60,10 @@ vector<int> ChessPiece_King::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	//lower right
@@ -59,7 +72,10 @@ vector<int> ChessPiece_King::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	//right
@@ -68,7 +84,10 @@ vector<int> ChessPiece_King::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	//upper right
@@ -77,7 +96,10 @@ vector<int> ChessPiece_King::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	//above
@@ -86,28 +108,47 @@ vector<int> ChessPiece_King::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	//two to the right (castling only)
 	index = square_->index() + 2;
-	if(!hasMoved_ && board_->square(index-1)->getPiece() == NULL &&
+	if(!inCheck_ && !hasMoved_ && board_->square(index-1)->getPiece() == NULL &&
 		board_->square(index)->getPiece() == NULL &&
 		board_->square(index+1)->getPiece() != NULL &&
 		!board_->square(index+1)->getPiece()->hasMoved())
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index-1);
+		if(move->isLegal(piece_color)) //must make sure the king is not castling through check
+		{
+			delete move;
+			move = new ChessMove(board_, square_->index(), index);
+			if(move->isLegal(piece_color))
+				legalMoves.push_back(index);
+		}
+		delete move;
 	}
 	
 	//two to the left (castling only)
 	index = square_->index() - 2;
-	if(!hasMoved_ && board_->square(index+1)->getPiece() == NULL &&
+	if(!inCheck_ && !hasMoved_ && board_->square(index+1)->getPiece() == NULL &&
 		board_->square(index)->getPiece() == NULL &&
 		board_->square(index-1)->getPiece() == NULL &&
 		board_->square(index-2)->getPiece() != NULL &&
 		!board_->square(index-2)->getPiece()->hasMoved())
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index+1);
+		if(move->isLegal(piece_color)) //must make sure the king is not castling through check
+		{
+			delete move;
+			move = new ChessMove(board_, square_->index(), index);
+			if(move->isLegal(piece_color))
+				legalMoves.push_back(index);
+		}
+		delete move;
 	}
 	
 	return legalMoves;
@@ -387,4 +428,12 @@ void ChessPiece_King::move(ChessBoardSquare *dest)
 	dest->setPiece(this);
 	hasMoved_ = true;
 	
+}
+
+void ChessPiece_King::cmove(ChessBoardSquare *dest)
+{
+	if(dest->getPiece() != NULL && dest->getPiece() != this)
+		dest->getPiece()->isCaptured();
+	square_ = dest;
+	dest->setPiece(this);
 }

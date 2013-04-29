@@ -12,6 +12,7 @@ ChessPiece_Pawn::ChessPiece_Pawn(ChessBoard *board, ChessPiece_Pawn *piece) : Ch
 {
 	hasMoved_ = piece->hasMoved_;
 	enPassant_ = piece->enPassant_;
+	promoted_piece = NULL;
 	if(piece->promoted_piece != NULL)
 	{
 		switch(piece_type)
@@ -36,21 +37,27 @@ ChessPiece_Pawn::ChessPiece_Pawn(ChessBoard *board, ChessPiece_Pawn *piece) : Ch
 vector<int> ChessPiece_Pawn::legalMoves()
 {
 	vector<int> legalMoves;
+	ChessMove *move;
 	if(promoted_piece == NULL) //regular pawn
 	{
 		int index;
-	
 		if(piece_color == 'W')//white
 		{
 			index = square_->index() + 8;
 			if(board_->square(index)->getPiece() == NULL)
 			{
-				legalMoves.push_back(index);
+				move = new ChessMove(board_, square_->index(), index);
+				if(move->isLegal(piece_color))
+					legalMoves.push_back(index);
+				delete move;
 				
 				index += 8;
 				if(!hasMoved_ && board_->square(index)->getPiece() == NULL)
 				{
-					legalMoves.push_back(index);
+					move = new ChessMove(board_, square_->index(), index);
+					if(move->isLegal(piece_color))
+						legalMoves.push_back(index);
+					delete move;
 				}
 			}
 			
@@ -61,7 +68,10 @@ vector<int> ChessPiece_Pawn::legalMoves()
 				board_->square(index-8)->getPiece()->color() == 'B' &&
 				board_->square(index-8)->getPiece()->enPassant()))) //can capture via en passant
 			{
-				legalMoves.push_back(index);
+				move = new ChessMove(board_, square_->index(), index);
+				if(move->isLegal(piece_color))
+					legalMoves.push_back(index);
+				delete move;
 			}
 			
 			index = square_->index() + 9;
@@ -71,7 +81,10 @@ vector<int> ChessPiece_Pawn::legalMoves()
 				board_->square(index-8)->getPiece()->color() == 'B' &&
 				board_->square(index-8)->getPiece()->enPassant()))) //can capture via en passant
 			{
-				legalMoves.push_back(index);
+				move = new ChessMove(board_, square_->index(), index);
+				if(move->isLegal(piece_color))
+					legalMoves.push_back(index);
+				delete move;
 			}
 			
 		}
@@ -80,12 +93,17 @@ vector<int> ChessPiece_Pawn::legalMoves()
 			index = square_->index() - 8;
 			if(board_->square(index)->getPiece() == NULL)
 			{
-				legalMoves.push_back(index);
-				
+				move = new ChessMove(board_, square_->index(), index);
+				if(move->isLegal(piece_color))
+					legalMoves.push_back(index);
+				delete move;
 				index -= 8;
 				if(!hasMoved_ && board_->square(index)->getPiece() == NULL)
 				{
-					legalMoves.push_back(index);
+					move = new ChessMove(board_, square_->index(), index);
+					if(move->isLegal(piece_color))
+						legalMoves.push_back(index);
+					delete move;
 				}
 			}
 			
@@ -96,7 +114,10 @@ vector<int> ChessPiece_Pawn::legalMoves()
 				board_->square(index+8)->getPiece()->color() == 'W' &&
 				board_->square(index+8)->getPiece()->enPassant()))) //can capture via en passant
 			{
-				legalMoves.push_back(index);
+				move = new ChessMove(board_, square_->index(), index);
+				if(move->isLegal(piece_color))
+					legalMoves.push_back(index);
+				delete move;
 			}
 			
 			index = square_->index() - 7;
@@ -106,7 +127,10 @@ vector<int> ChessPiece_Pawn::legalMoves()
 				board_->square(index+8)->getPiece()->color() == 'W' &&
 				board_->square(index+8)->getPiece()->enPassant()))) //can capture via en passant
 			{
-				legalMoves.push_back(index);
+				move = new ChessMove(board_, square_->index(), index);
+				if(move->isLegal(piece_color))
+					legalMoves.push_back(index);
+				delete move;
 			}
 			
 		}
@@ -169,6 +193,31 @@ void ChessPiece_Pawn::move(ChessBoardSquare *dest)
 	square_ = dest;
 	dest->setPiece(this);
 	hasMoved_ = true;
+	if(promoted_piece != NULL)
+	{
+		promoted_piece->copyData(this);
+	}
+}
+
+void ChessPiece_Pawn::cmove(ChessBoardSquare *dest)
+{
+	if(dest->getPiece() != NULL)
+		dest->getPiece()->isCaptured();
+	//en passant captures
+	else if(promoted_piece == NULL && piece_color == 'W' && 
+		board_->square(dest->index() - 8)->getPiece() != NULL &&
+		board_->square(dest->index() - 8)->getPiece()->enPassant())
+	{
+		board_->square(dest->index() - 8)->getPiece()->isCaptured();
+	}
+	else if(promoted_piece == NULL && piece_color == 'B' && 
+		board_->square(dest->index() + 8)->getPiece() != NULL &&
+		board_->square(dest->index() + 8)->getPiece()->enPassant())
+	{
+		board_->square(dest->index() + 8)->getPiece()->isCaptured();
+	}
+	square_ = dest;
+	dest->setPiece(this);
 	if(promoted_piece != NULL)
 	{
 		promoted_piece->copyData(this);

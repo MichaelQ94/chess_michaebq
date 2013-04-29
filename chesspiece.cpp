@@ -13,7 +13,7 @@ ChessPiece::ChessPiece(ChessBoard *board, char type, char color, int value)
 
 ChessPiece::ChessPiece(ChessBoard *board, ChessPiece *piece)
 {
-	board_ = piece->board_;
+	board_ = board;
 	square_ = piece->square_;
 	piece_type = piece->piece_type;
 	piece_color = piece->piece_color;
@@ -101,6 +101,14 @@ void ChessPiece::move(ChessBoardSquare *dest)
 {
 	if(square_ != NULL)
 		square_->clear();
+	if(dest->getPiece() != NULL)
+		dest->getPiece()->isCaptured();
+	square_ = dest;
+	dest->setPiece(this);
+}
+
+void ChessPiece::cmove(ChessBoardSquare *dest)
+{
 	if(dest->getPiece() != NULL)
 		dest->getPiece()->isCaptured();
 	square_ = dest;

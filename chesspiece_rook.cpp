@@ -14,6 +14,7 @@ ChessPiece_Rook::ChessPiece_Rook(ChessBoard *board, ChessPiece_Rook *piece) : Ch
 vector<int> ChessPiece_Rook::legalMoves()
 {
 	vector<int> legalMoves;
+	ChessMove *move;
 	
 	//right
 	int index = square_->index() + 1;
@@ -22,7 +23,12 @@ vector<int> ChessPiece_Rook::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains an enemy piece
 			break;
 		++index;
@@ -35,7 +41,12 @@ vector<int> ChessPiece_Rook::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains an enemy piece
 			break;
 		--index;
@@ -48,7 +59,12 @@ vector<int> ChessPiece_Rook::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains an enemy piece
 			break;
 		index += 8;
@@ -61,7 +77,12 @@ vector<int> ChessPiece_Rook::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains an enemy piece
 			break;
 		index -= 8;
@@ -79,6 +100,14 @@ void ChessPiece_Rook::move(ChessBoardSquare *dest)
 	square_ = dest;
 	dest->setPiece(this);
 	hasMoved_ = true;
+}
+
+void ChessPiece_Rook::cmove(ChessBoardSquare *dest)
+{
+	if(dest->getPiece() != NULL)
+		dest->getPiece()->isCaptured();
+	square_ = dest;
+	dest->setPiece(this);
 }
 
 bool ChessPiece_Rook::hasMoved()

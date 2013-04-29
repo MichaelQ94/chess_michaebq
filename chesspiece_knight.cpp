@@ -11,13 +11,17 @@ ChessPiece_Knight::ChessPiece_Knight(ChessBoard *board, ChessPiece_Knight *piece
 vector<int> ChessPiece_Knight::legalMoves()
 {
 	vector<int> legalMoves;
+	ChessMove *move;
 	
 	int index = square_->index() + 17;
 	if(index < 64 && index % 8 != 0 && 
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	index = square_->index() + 10;
@@ -25,7 +29,10 @@ vector<int> ChessPiece_Knight::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	index = square_->index() - 6;
@@ -33,7 +40,10 @@ vector<int> ChessPiece_Knight::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	index = square_->index() - 15;
@@ -41,7 +51,10 @@ vector<int> ChessPiece_Knight::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	index = square_->index() - 17;
@@ -49,7 +62,10 @@ vector<int> ChessPiece_Knight::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	index = square_->index() - 10;
@@ -57,7 +73,10 @@ vector<int> ChessPiece_Knight::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	index = square_->index() + 6;
@@ -65,7 +84,10 @@ vector<int> ChessPiece_Knight::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	index = square_->index() + 15;
@@ -73,7 +95,10 @@ vector<int> ChessPiece_Knight::legalMoves()
 		!(board_->square(index)->getPiece() != NULL && 
 		board_->square(index)->getPiece()->color() == piece_color))
 	{
-		legalMoves.push_back(index);
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
 	}
 	
 	return legalMoves;

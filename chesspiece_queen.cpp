@@ -12,6 +12,7 @@ ChessPiece_Queen::ChessPiece_Queen(ChessBoard *board, ChessPiece_Queen *piece) :
 vector<int> ChessPiece_Queen::legalMoves()
 {
 	vector<int> legalMoves;
+	ChessMove *move;
 	
 	//scan the diagonal to the upper right
 	int index = square_->index() + 9;
@@ -20,7 +21,12 @@ vector<int> ChessPiece_Queen::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains an enemy piece
 			break;
 		index += 9;
@@ -33,7 +39,12 @@ vector<int> ChessPiece_Queen::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains a piece
 			break;
 		index -= 9;
@@ -46,7 +57,12 @@ vector<int> ChessPiece_Queen::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains a piece
 			break;
 		index += 7;
@@ -59,7 +75,12 @@ vector<int> ChessPiece_Queen::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains a piece
 			break;
 		index -= 7;
@@ -72,7 +93,12 @@ vector<int> ChessPiece_Queen::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains an enemy piece
 			break;
 		++index;
@@ -85,7 +111,12 @@ vector<int> ChessPiece_Queen::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains an enemy piece
 			break;
 		--index;
@@ -98,7 +129,12 @@ vector<int> ChessPiece_Queen::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains an enemy piece
 			break;
 		index += 8;
@@ -111,7 +147,12 @@ vector<int> ChessPiece_Queen::legalMoves()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		legalMoves.push_back(index);
+		
+		move = new ChessMove(board_, square_->index(), index);
+		if(move->isLegal(piece_color))
+			legalMoves.push_back(index);
+		delete move;
+		
 		if(board_->square(index)->getPiece() != NULL) //this square contains an enemy piece
 			break;
 		index -= 8;
