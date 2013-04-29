@@ -273,6 +273,59 @@ bool ChessBoard::blackCheck()
 	return blackPieces_[15]->inCheck();
 }
 
+bool ChessBoard::whiteCheckMate()
+{
+	if(!whiteToMove_ || whitePieces_[15]->inCheck())
+		return false;
+	for(int i = 0; i < 16; ++i)
+	{
+		if(!whitePieces_[i]->captured() && 
+			whitePieces_[i]->legalMoves().size() > 0)
+			return false;
+	}
+	
+	return true;
+}
+
+bool ChessBoard::blackCheckMate()
+{
+	if(whiteToMove_ || !blackPieces_[15]->inCheck())
+		return false;
+	for(int i = 0; i < 16; ++i)
+	{
+		if(!blackPieces_[i]->captured() && 
+			blackPieces_[i]->legalMoves().size() > 0)
+			return false;
+	}
+	
+	return true;
+}
+
+bool ChessBoard::staleMate()
+{
+	if(whiteToMove_ && !whitePieces_[15]->inCheck())
+	{
+		for(int i = 0; i < 16; ++i)
+		{
+			if(!blackPieces_[i]->captured() && 
+				blackPieces_[i]->legalMoves().size() > 0)
+			return false;
+		}
+		return true;
+	}
+	else if(!whiteToMove_ && !blackPieces_[15]->inCheck())
+	{
+		for(int i = 0; i < 16; ++i)
+		{
+			if(!blackPieces_[i]->captured() && 
+				blackPieces_[i]->legalMoves().size() > 0)
+			return false;
+		}
+		return true;
+	}
+	return false;
+}
+
 ChessBoard::~ChessBoard()
 {
 	//delete dynamically allocated squares

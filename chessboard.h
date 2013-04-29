@@ -35,6 +35,9 @@ class ChessBoard
 		ChessPiece* blackPiece(int index);
 		bool whiteCheck();
 		bool blackCheck();
+		bool whiteCheckMate();
+		bool blackCheckMate();
+		bool staleMate();
 		bool whiteToMove();
 		void changeTurn();
 		~ChessBoard();

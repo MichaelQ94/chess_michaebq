@@ -168,7 +168,7 @@ bool ChessPiece_King::checkForCheck()
 {
 	//scan the diagonal to the upper right
 	int index = square_->index() + 9;
-	if(board_->square(index)->getPiece() != NULL &&
+	if(piece_color == 'W' && board_->square(index)->getPiece() != NULL &&
 		board_->square(index)->getPiece()->color() != piece_color &&
 		board_->square(index)->getPiece()->type() == 'P') //this square contains an enemy pawn
 	{
@@ -180,36 +180,49 @@ bool ChessPiece_King::checkForCheck()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		if(board_->square(index)->getPiece() != NULL && 
-			(board_->square(index)->getPiece()->type() == 'B' ||
-			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy bishop or queen
+		if(board_->square(index)->getPiece() != NULL) //contains enemy piece
 		{
-			inCheck_ = true;
-			return true;
+			if((board_->square(index)->getPiece()->type() == 'B' ||
+			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy bishop or queen
+			{
+				inCheck_ = true;
+				return true;
+			}
+			break;
 		}
 		index += 9;
 	}
 	
 	//scan the diagonal to the lower left
 	index = square_->index() - 9;
+	if(piece_color == 'B' && board_->square(index)->getPiece() != NULL &&
+		board_->square(index)->getPiece()->color() != piece_color &&
+		board_->square(index)->getPiece()->type() == 'P') //this square contains an enemy pawn
+	{
+		inCheck_ = true;
+		return true;
+	}
 	while(index >= 0 && index % 8 != 7)
 	{
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		if(board_->square(index)->getPiece() != NULL && 
-			(board_->square(index)->getPiece()->type() == 'B' ||
-			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy bishop or queen
+		if(board_->square(index)->getPiece() != NULL) //contains enemy piece
 		{
-			inCheck_ = true;
-			return true;
+			if((board_->square(index)->getPiece()->type() == 'B' ||
+			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy bishop or queen
+			{
+				inCheck_ = true;
+				return true;
+			}
+			break;
 		}
 		index -= 9;
 	}
 	
 	//scan the diagonal to the upper left
 	index = square_->index() + 7;
-	if(board_->square(index)->getPiece() != NULL &&
+	if(piece_color == 'W' && board_->square(index)->getPiece() != NULL &&
 		board_->square(index)->getPiece()->color() != piece_color &&
 		board_->square(index)->getPiece()->type() == 'P') //this square contains an enemy pawn
 	{
@@ -221,18 +234,28 @@ bool ChessPiece_King::checkForCheck()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		if(board_->square(index)->getPiece() != NULL && 
-			(board_->square(index)->getPiece()->type() == 'B' ||
-			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy bishop or queen
+		if(board_->square(index)->getPiece() != NULL) //contains enemy piece
 		{
-			inCheck_ = true;
-			return true;
+			if((board_->square(index)->getPiece()->type() == 'B' ||
+			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy bishop or queen
+			{
+				inCheck_ = true;
+				return true;
+			}
+			break;
 		}
 		index += 7;
 	}
 	
 	//scan the diagonal to the lower right
 	index = square_->index() - 7;
+	if(piece_color == 'B' && board_->square(index)->getPiece() != NULL &&
+		board_->square(index)->getPiece()->color() != piece_color &&
+		board_->square(index)->getPiece()->type() == 'P') //this square contains an enemy pawn
+	{
+		inCheck_ = true;
+		return true;
+	}
 	while(index >= 0 && index % 8 != 0)
 	{
 		if(board_->square(index)->getPiece() != NULL && 
@@ -255,12 +278,15 @@ bool ChessPiece_King::checkForCheck()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		if(board_->square(index)->getPiece() != NULL && 
-			(board_->square(index)->getPiece()->type() == 'R' ||
-			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy rook or queen
+		if(board_->square(index)->getPiece() != NULL) //contains enemy piece
 		{
-			inCheck_ = true;
-			return true;
+			if((board_->square(index)->getPiece()->type() == 'B' ||
+			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy bishop or queen
+			{
+				inCheck_ = true;
+				return true;
+			}
+			break;
 		}
 		++index;
 	}
@@ -272,12 +298,15 @@ bool ChessPiece_King::checkForCheck()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		if(board_->square(index)->getPiece() != NULL && 
-			(board_->square(index)->getPiece()->type() == 'R' ||
-			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy rook or queen
+		if(board_->square(index)->getPiece() != NULL) //contains enemy piece
 		{
-			inCheck_ = true;
-			return true;
+			if((board_->square(index)->getPiece()->type() == 'R' ||
+			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy rook or queen
+			{
+				inCheck_ = true;
+				return true;
+			}
+			break;
 		}
 		--index;
 	}
@@ -289,12 +318,15 @@ bool ChessPiece_King::checkForCheck()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		if(board_->square(index)->getPiece() != NULL && 
-			(board_->square(index)->getPiece()->type() == 'R' ||
-			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy rook or queen
+		if(board_->square(index)->getPiece() != NULL) //contains enemy piece
 		{
-			inCheck_ = true;
-			return true;
+			if((board_->square(index)->getPiece()->type() == 'R' ||
+			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy rook or queen
+			{
+				inCheck_ = true;
+				return true;
+			}
+			break;
 		}
 		index += 8;
 	}
@@ -306,12 +338,15 @@ bool ChessPiece_King::checkForCheck()
 		if(board_->square(index)->getPiece() != NULL && 
 			board_->square(index)->getPiece()->color() == piece_color) //friendly piece
 			break;
-		if(board_->square(index)->getPiece() != NULL && 
-			(board_->square(index)->getPiece()->type() == 'R' ||
-			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy rook or queen
+		if(board_->square(index)->getPiece() != NULL) //contains enemy piece
 		{
-			inCheck_ = true;
-			return true;
+			if((board_->square(index)->getPiece()->type() == 'R' ||
+			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy rook or queen
+			{
+				inCheck_ = true;
+				return true;
+			}
+			break;
 		}
 		index -= 8;
 	}
