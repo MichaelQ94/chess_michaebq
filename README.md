@@ -25,6 +25,3 @@ doxygen config.txt
 #Command to run
 ./game_michaebq
 ```
-
-### Screenshots -- [Optional]
-You can either remove this section or add screenshots if you wish.
