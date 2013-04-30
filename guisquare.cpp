@@ -1,5 +1,8 @@
 #include "guisquare.h"
 
+/**Constructor. Initializes the proper values and sets the location and color of the square.
+ *
+ */
 GUISquare::GUISquare(GraphicsWindow *gw, ChessBoardSquare *square, int x, int y, int w) : QGraphicsRectItem(x, y, w, w)
 {
 	gw_ = gw;
@@ -39,11 +42,19 @@ GUISquare::GUISquare(GraphicsWindow *gw, ChessBoardSquare *square, int x, int y,
 	coordinates_ += QString::number((square_->index() / 8) + 1);
 }
 
+/**Returns the coordinates of this square in algebraic chess notation.
+ * @return The chess notation coordinates of this square
+ */
 QString GUISquare::getCoordinates()
 {
 	return coordinates_;
 }
 
+/**Handles user input via clicking. If no piece is selected, selects the piece and highlights the appropriate
+ * squares to which it is allowed to move. If a piece is selected, attempts to move the piece to this square
+ * if the move is allowed.
+ * @param *c The mouse event which triggered this function
+ */
 void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)
 {
 	//must wait until animation is done before making new moves
@@ -114,11 +125,17 @@ void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)
 	}
 }
 
+/**Returns a reference to the GUIPiece occupying this square
+ * @return Reference to the GUIPiece occupying this square
+ */
 GUIPiece* GUISquare::guiPiece()
 {
 	return gpiece_;
 }
 
+/**Sets the color of this square.
+ * @param color The color to which his square is to be set
+ */
 void GUISquare::setColor(Qt::GlobalColor color)
 {
 	color_ = color;
@@ -126,17 +143,25 @@ void GUISquare::setColor(Qt::GlobalColor color)
 	setBrush(brush);
 }
 
+/**Sets the color of the square to cyan, highlighting it. Highlighted squares are used to show which square
+ * is selected and which moves are allowed.
+ */
 void GUISquare::highlight()
 {
 	setBrush(QBrush(Qt::cyan));
 	highlighted_ = true;
 }
 
+/**Returns true if this square is highligted
+ * @return Returns true if this square is highlighted, false if not
+ */
 bool GUISquare::highlighted()
 {
 	return highlighted_;
 }
 
+/**Resets the color of this square to its original color. Used when dehighlighting squares.
+ */
 void GUISquare::resetColor()
 {
 	QBrush brush(color_);
@@ -144,31 +169,48 @@ void GUISquare::resetColor()
 	highlighted_ = false;
 }
 
-void GUISquare::setPiece(GUIPiece* gpiece)
+/**Sets this square's gpiece_ pointer to the given GUIPIece. Used when a piece is to be moved to this square.
+ * @param *gpiece The piece to be moved to this square
+ */
+void GUISquare::setPiece(GUIPiece *gpiece)
 {
 	gpiece_ = gpiece;
 }
 
+/**Clears the piece occupying this board. Used when the piece moves away.
+ */
 void GUISquare::clear()
 {
 	gpiece_ = NULL;
 }
 
+/**Returns the x-coordinate of this square
+ * @return The x-coordinate of this square
+ */
 int GUISquare::getX()
 {
 	return x_;
 }
 
+/**Returns the y-coordinate of this square
+ * @return The y-coordinate of this square
+ */
 int GUISquare::getY()
 {
 	return y_;
 }
 
+/**Returns the index of this square in the array of all GUISquares contained in the GraphicsWindow
+ * @return The index position of this square in the array of all GUISquares
+ */
 int GUISquare::index()
 {
 	return square_->index();
 }
 
+/**Returns the ChessBoardSquare represented by this GUISquare
+ * @return A reference to the ChessBoardSquare represented by this GUISquare
+ */
 ChessBoardSquare* GUISquare::square()
 {
 	return square_;

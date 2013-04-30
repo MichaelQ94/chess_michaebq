@@ -32,31 +32,45 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 	
 	private:
+		/**The number of moves which has been made*/
 		int movecount;
-		QString whiteMove_, fullMove_;
+		/**True if the game is paused, false if not*/
+		bool paused_;
+		/**Stores the last move made by white*/
+		QString whiteMove_;
+		/**Stores the last move made by white and the last move made by black*/
+		QString fullMove_;
+		/**A list of strings to be used to display the moves made over the course of the game*/
 		QStringList stringlist;
+		/**To be used with the leftdockwidget to display the list of moves*/
 		QStringListModel *listmodel;
 		
+		/**GraphicsWindow used to display the board and pieces*/
 		GraphicsWindow *gwindow;
+		/**Reference to the parent QApplication*/
 		QApplication *app;
 		
-		//basic game actions
+		/**File menu*/
 		QMenu *file;
-		QAction *quit, *startGame, *pause;
+		/**Exits the game*/
+		QAction *quit;
+		/**Starts the game*/
+		QAction *startGame;
+		/**Pauses the game*/
+		QAction *pause;
+		/**Toolbar to hold the buttons*/
 		QToolBar *toolBar1;
 		
 		//forms for names and time control
 		FormWindow *forms;
 		QDockWidget *userinput;
 		
-		//outputting score and movelist
+		/**Textbox to output the list of moves*/
 		QListView *textbox;
+		/**QDockWidget to output the list of moves*/
 		QDockWidget *moveList;
 		
-		//Piece selection during promotion
-		QRadioButton *knight, *bishop, *rook, *queen;
-		QAction *promote;
-	
+		
 	public:
 		MainWindow(QApplication*);
 		void printMove(QString move);

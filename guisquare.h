@@ -19,18 +19,30 @@
 #include "guipiece.h"
 #include "chessboardsquare.h"
 
+/**Class used to display the board and pieces*/
 class GraphicsWindow;
+/**Class used to display the chess pieces*/
 class GUIPiece;
 
+/**Class used to represent a single board square and handle user input via clicking*/
 class GUISquare : public QGraphicsRectItem
 {	
 	private:
+		/**Reference to the parent GraphicsWindow*/
 		GraphicsWindow *gw_;
+		/**Reference to the piece occupying this square*/
 		GUIPiece *gpiece_;
+		/**Reference to the ChessBoardSquare represented by this GUISquare*/
 		ChessBoardSquare *square_;
+		/**The "natural" color of this square (either white or gray)*/
 		Qt::GlobalColor color_;
-		int x_, y_;
+		/**The x-coordinate of this square*/
+		int x_;
+		/**The y-coordinate of this square*/
+		int y_;
+		/**True if this square is highlighted, false if not*/
 		bool highlighted_;
+		/**Prints the coordinates of this square in algebraic chess notation*/
 		QString coordinates_;
 	
 	public:

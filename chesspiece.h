@@ -7,19 +7,29 @@
 #include "chessmove.h"
 using namespace std;
 
+/**Class to handle the collection of all squares and pieces*/
 class ChessBoard;
+/**Class used to represent a single square on the board*/
 class ChessBoardSquare;
+/**Class used to represent a single move on the board*/
 class ChessMove;
 
+/**Class used to handle generic chess piece functionality.
+ */
 class ChessPiece
 {
 	protected:
-
-		char piece_type; //P = pawn, N = knight, B = bishop, R = rook, Q = queen, K = king
-		char piece_color; //W = white, B = black
-		int value_; //pawn-1, knight-3, bishop-3, rook-5, queen-9, king-(-1)
-		bool captured_; //false if on board (default)
+		/**P = pawn, N = knight, B = bishop, R = rook, Q = queen, K = king*/
+		char piece_type;
+		/**W = white, B = black*/
+		char piece_color;
+		/**pawn-1, knight-3, bishop-3, rook-5, queen-9, king-(-1)*/
+		int value_;
+		/**false if on board (default), true if the piece has been captured*/
+		bool captured_;
+		/**Reference to the square occupied by this piece*/
 		ChessBoardSquare *square_;
+		/**Reference to the board containing this piece*/
 		ChessBoard* board_;
 		
 	public:
@@ -39,6 +49,7 @@ class ChessPiece
 		virtual void move(ChessBoardSquare *dest);
 		virtual void cmove(ChessBoardSquare *dest);
 		virtual void refresh();
+		/**Returns a list of all legal moves which can be made by this piece*/
 		virtual vector<int> legalMoves() = 0;
 		virtual void promote(char type);
 		
@@ -46,6 +57,7 @@ class ChessPiece
 		virtual bool checkForCheck();
 };
 
+/**Class used to handle pawn-specific functionality*/
 class ChessPiece_Pawn : public ChessPiece
 {
 	public:
@@ -61,11 +73,17 @@ class ChessPiece_Pawn : public ChessPiece
 		bool enPassant();
 		void reset();
 	private:
+		/**Used to handle pawn promotions. Set to NULL for a normal pawn (default) and can be dynamically
+		 * instantiated as a queen, rook, bishop, or knight at the time of promotion.
+		 */
 		ChessPiece *promoted_piece;
+		/**True if the pawn has moved, false if not (default)*/
 		bool hasMoved_;
+		/**True if the pawn has just moved up two squares and is capable of being captured via en passant*/
 		bool enPassant_;
 };
 
+/**Class used to handle knight-specific functionality*/
 class ChessPiece_Knight : public ChessPiece
 {
 	public:
@@ -74,6 +92,7 @@ class ChessPiece_Knight : public ChessPiece
 		vector<int> legalMoves();
 };
 
+/**Class used to handle bishop-specific functionality*/
 class ChessPiece_Bishop : public ChessPiece
 {
 	public:
@@ -82,6 +101,7 @@ class ChessPiece_Bishop : public ChessPiece
 		vector<int> legalMoves();
 };
 
+/**Class used to handle rook-specific functionality*/
 class ChessPiece_Rook : public ChessPiece
 {
 	public:
@@ -93,9 +113,11 @@ class ChessPiece_Rook : public ChessPiece
 		bool hasMoved();
 		void reset();
 	private:
+		/**True if the rook has moved, false if not (default)*/
 		bool hasMoved_;
 };
 
+/**Class used to handle queen-specific functionality*/
 class ChessPiece_Queen : public ChessPiece
 {
 	public:
@@ -104,6 +126,7 @@ class ChessPiece_Queen : public ChessPiece
 		vector<int> legalMoves();
 };
 
+/**Class used to handle king-specific functionality*/
 class ChessPiece_King : public ChessPiece
 {
 	public:
@@ -117,7 +140,9 @@ class ChessPiece_King : public ChessPiece
 		bool hasMoved();
 		void reset();
 	private:
+		/**True if there is an enemy piece which is able to capture the king*/
 		bool inCheck_;
+		/**True if the king has moved, false if not (default)*/
 		bool hasMoved_;
 };
 #endif

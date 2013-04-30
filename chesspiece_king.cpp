@@ -1,18 +1,35 @@
 #include "chesspiece.h"
 using namespace std;
 
+/**Constructor. Sets the proper values in the ChessPiece class ('K' for king, -1 for score value because the king
+ * will never be captured).
+ * Links this piece to its parent board.
+ * Sets inCheck_ and hasMoved_ to false initially.
+ * @param *board The parent board to which this piece belongs
+ * @param color Character representing the color of the piece (W for white, B for black)
+ */
 ChessPiece_King::ChessPiece_King(ChessBoard *board, char color) : ChessPiece(board, 'K', color, -1)
 {
 	inCheck_ = false;
 	hasMoved_ = false;
 }
 
+/**'Copy' constructor. Copies the provided piece's information but links this piece to a different board.
+ * @param *board The parent board to which this piece belongs
+ * @param *piece The piece whose information is to be copied
+ */
 ChessPiece_King::ChessPiece_King(ChessBoard *board, ChessPiece_King *piece) : ChessPiece(board, piece)
 {
 	inCheck_ = piece->inCheck_;
 	hasMoved_ = piece->hasMoved_;
 }
 
+/**Returns a vector of the indices of the squares to which this piece is allowed to move.
+ * Scans each adjacent to see if it is either empty or contains an enemy piece. Also checks to make sure the king is
+ * not moving into check before pushing a move to the vector.
+ * If the king has not moved, checks to see if castling is possible by checking the two rooks and the squares in between.
+ * @return A list of the indices of the squares to which this piece is allowed to move.
+ */
 vector<int> ChessPiece_King::legalMoves()
 {
 	vector<int> legalMoves;
@@ -154,16 +171,26 @@ vector<int> ChessPiece_King::legalMoves()
 	return legalMoves;
 }
 
+/**Returns the inCheck_ condition of the king.
+ * @return Returns true if the king is in check, false if not
+ */
 bool ChessPiece_King::inCheck()
 {
 	return inCheck_;
 }
 
+/**Resets the hasMoved_ condition of the king to false. This is to be used after the king has been placed on the board
+ * using the move() function.
+ */
 void ChessPiece_King::reset()
 {
 	hasMoved_ = false;
 }
 
+/**Scans all squares on which a piece attacking the king could be placed to see if there is an enemy piece.
+ * Returns true if it finds even one piece which is attacking the king and sets inCheck_ to true.
+ * @return Returns true if the king is in check, false if not
+ */
 bool ChessPiece_King::checkForCheck()
 {
 	//scan the diagonal to the upper right
@@ -435,11 +462,18 @@ bool ChessPiece_King::checkForCheck()
 	return false; //this is only reached if all the possibilites have been searched and no check was detected
 }
 
+/**Returns the hasMoved_ condition of this piece.
+ * @return Returns true if king has been moved, false if not
+ */
 bool ChessPiece_King::hasMoved()
 {
 	return hasMoved_;
 }
 
+/**Moves the king to the provided square. Checks to see if the king is castling and if so, moves the corresponding rook
+ * to the proper location as well.
+ * @param *dest The square to which the king is to be moved
+ */
 void ChessPiece_King::move(ChessBoardSquare *dest)
 {
 	if(square_ != NULL)
@@ -465,6 +499,10 @@ void ChessPiece_King::move(ChessBoardSquare *dest)
 	
 }
 
+/**Moves the king to the destination square but does nothing to the current square. To be used with the board copy
+ * constructor.
+ * @param *dest The square to which the king is to be moved
+ */
 void ChessPiece_King::cmove(ChessBoardSquare *dest)
 {
 	if(dest->getPiece() != NULL && dest->getPiece() != this)

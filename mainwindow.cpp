@@ -1,7 +1,10 @@
 #include "mainwindow.h"
 
+/**Constructor. Initializes window size and menu buttons.
+*/
 MainWindow::MainWindow(QApplication *app)
 {
+	paused_ = false;
 	setFixedSize(800, 740);
 	setWindowTitle("Chess");
 	listmodel = NULL;
@@ -48,16 +51,29 @@ MainWindow::MainWindow(QApplication *app)
 	moveList->setFeatures(QDockWidget::NoDockWidgetFeatures);
 }
 
+/**Destructor. Deletes all memory allocated using 'new'*/
 MainWindow::~MainWindow()
 {
 	if(gwindow != NULL)
 		delete gwindow;
 	delete quit;
+	delete pause;
 	delete startGame;
+	
+	delete file;
+	delete toolBar1;
+	
+	delete forms;
+	delete userinput;
+	
+	delete textbox;
+	delete moveList;
 }
 
+/**Starts the game and displays the board*/
 void MainWindow::start_game()
 {
+	paused_ = false;
 	QString whiteName = forms->getWhiteName();
 	QString blackName = forms->getBlackName();
 	int time = forms->getTime();
@@ -94,11 +110,29 @@ void MainWindow::start_game()
 	textbox->setModel(NULL); //clear the text box
 }
 
+/**Pauses the game timer and hides the board*/
 void MainWindow::pause_game()
 {
-	//implement
+	if(gwindow != NULL)
+	{
+		if(paused_)
+		{
+			gwindow->startGame();
+			pause->setText("Pause");
+			paused_ = false;
+		}
+		else
+		{
+			gwindow->pauseGame();
+			pause->setText("Unpause");
+			paused_ = true;
+		}
+	}
 }
 
+/**Prints the last move made to the list of moves
+ * @param move_ The move to be printed
+ */
 void MainWindow::printMove(QString move_)
 {
 	if(listmodel != NULL)

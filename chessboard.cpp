@@ -1,5 +1,9 @@
 #include "chessboard.h"
 
+/**Default constructor.
+ * Creates the chessboardsquare objects to hold the pieces, creates the pieces, then places the pieces on the
+ * board.
+ */
 ChessBoard::ChessBoard()
 {
 	whiteToMove_ = true;
@@ -96,6 +100,10 @@ ChessBoard::ChessBoard()
 	blackPieces_[13]->move(squares_[63]); //black right rook
 }
 
+/**Copy constructor. Creates a new board object whose elements have the same values (deep copy).
+ * Intended for use with the ChessMove class in order to examine future moves.
+ * @param *board The board to be copied
+ */
 ChessBoard::ChessBoard(ChessBoard *board)
 {
 	whiteToMove_ = board->whiteToMove_;
@@ -222,11 +230,18 @@ ChessBoard::ChessBoard(ChessBoard *board)
 		blackPieces_[13]->cmove(squares_[blackPieces_[13]->square()->index()]); //black right rook
 }
 
+/**Accessor. Used to determine which player's turn it is.
+ * @return Returns true if it is white's move, returns false if it is black's move.
+ */
 bool ChessBoard::whiteToMove()
 {
 	return whiteToMove_;
 }
 
+
+/**Changes from one player's turn to another. Also refreshes the en passant conditions of the pawns.
+ * Checks each king to see if it is in check.
+ */
 void ChessBoard::changeTurn()
 {
 	whiteToMove_ = !whiteToMove_;
@@ -248,31 +263,52 @@ void ChessBoard::changeTurn()
 	blackPieces_[15]->checkForCheck();
 }
 
+/**Returns a refrence to the square at the given index on the board.
+ * @param index The index of the square
+ * @return Reference to the square at the given index
+ */
 ChessBoardSquare* ChessBoard::square(int index)
 {
 	return squares_[index];
 }
 
+/**Returns a reference to the white piece at the given index in the array of white pieces.
+ * @param index The index of the piece
+ * @return Reference to the piece at the given index
+ */
 ChessPiece* ChessBoard::whitePiece(int index)
 {
 	return whitePieces_[index];
 }
 
+/**Returns a reference to the black piece at the given index in the array of white pieces.
+ * @param index The index of the piece
+ * @return Reference to the piece at the given index
+ */
 ChessPiece* ChessBoard::blackPiece(int index)
 {
 	return blackPieces_[index];
 }
 
+/**Accessor. Check's the white king's inCheck_ condition.
+ * @return Returns true if the white king is in check, false if not
+ */
 bool ChessBoard::whiteCheck()
 {
 	return whitePieces_[15]->inCheck();
 }
 
+/**Accessor. Check's the black king's inCheck_ condition.
+ * @return Returns true if the black king is in check, false if not
+ */
 bool ChessBoard::blackCheck()
 {
 	return blackPieces_[15]->inCheck();
 }
 
+/**Accessor. Checks to see if the white king is in check and white has no legal moves (checkmate).
+ * @return Returns true if the white king is in checkmate, false if not
+ */
 bool ChessBoard::whiteCheckMate()
 {
 	if(!whiteToMove_ || whitePieces_[15]->inCheck())
@@ -287,6 +323,9 @@ bool ChessBoard::whiteCheckMate()
 	return true;
 }
 
+/**Accessor. Checks to see if the black king is in check and black has no legal moves (checkmate).
+ * @return Returns true if the black king is in checkmate, false if not
+ */
 bool ChessBoard::blackCheckMate()
 {
 	if(whiteToMove_ || !blackPieces_[15]->inCheck())
@@ -301,6 +340,9 @@ bool ChessBoard::blackCheckMate()
 	return true;
 }
 
+/**Accessor. Checks to see if the player who is currently moving is not in check but has no legal moves (stalemate).
+ * @return Returns true of the player who is currently moving is in stalemate
+ */
 bool ChessBoard::staleMate()
 {
 	if(whiteToMove_ && !whitePieces_[15]->inCheck())
@@ -326,6 +368,9 @@ bool ChessBoard::staleMate()
 	return false;
 }
 
+/**Accessor. Returns the sum of the values of all of black's pieces which have been captured, which in turn is white's score
+ * @return White's score
+ */
 int ChessBoard::whiteScore()
 {
 	int score = 0;
@@ -337,6 +382,9 @@ int ChessBoard::whiteScore()
 	return score;
 }
 
+/**Accessor. Returns the sum of the values of all of white's pieces which have not been captured
+ * @return White's remaining score
+ */
 int ChessBoard::whiteRemaining()
 {
 	int score = 0;
@@ -348,6 +396,9 @@ int ChessBoard::whiteRemaining()
 	return score;
 }
 
+/**Accessor. Returns the sum of the values of all of white's pieces which have been captured, which in turn is black's score
+ * @return Black's score
+ */
 int ChessBoard::blackScore()
 {
 	int score = 0;
@@ -359,6 +410,9 @@ int ChessBoard::blackScore()
 	return score;
 }
 
+/**Accessor. Returns the sum of the values of all of black's pieces which have not been captured
+ * @return Black's remaining score
+ */
 int ChessBoard::blackRemaining()
 {
 	int score = 0;
@@ -370,7 +424,9 @@ int ChessBoard::blackRemaining()
 	return score;
 }
 
-
+/**Destructor.
+ * Deallocates the memory for the squares and the pieces
+ */
 ChessBoard::~ChessBoard()
 {
 	//delete dynamically allocated squares

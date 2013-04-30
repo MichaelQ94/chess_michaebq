@@ -1,14 +1,28 @@
 #include "chesspiece.h"
 using namespace std;
 
+/**Constructor. Sets the proper values in the ChessPiece class ('Q' for queen, 9 for score value).
+ * Links this piece to its parent board.
+ * @param *board The parent board to which this piece belongs
+ * @param color Character representing the color of the piece (W for white, B for black)
+ */
 ChessPiece_Queen::ChessPiece_Queen(ChessBoard *board, char color) : ChessPiece(board, 'Q', color, 9)
 {	
 }
 
+/**'Copy' constructor. Copies the provided piece's information but links this piece to a different board.
+ * @param *board The parent board to which this piece belongs
+ * @param *piece The piece whose information is to be copied
+ */
 ChessPiece_Queen::ChessPiece_Queen(ChessBoard *board, ChessPiece_Queen *piece) : ChessPiece(board, piece)
 {
 }
 
+/**Returns a list of the square to which the queen is allowed to move. Checks the diagonals as well as the current row
+ * and current column of the queen and makes sure a move does not put the owner's queen in check before adding the move
+ * to the list.
+ * @return The list of the indices of the squares to which the queen is allowed to move
+ */
 vector<int> ChessPiece_Queen::legalMoves()
 {
 	vector<int> legalMoves;

@@ -1,6 +1,12 @@
 #include "chesspiece.h"
 using namespace std;
 
+/**Constructor. Sets the proper values in the ChessPiece class ('P' for pawn, 1 for score value).
+ * Links this piece to its parent board.
+ * Initializes the promoted piece to NULL and sets hasMoved_ and enPassant_ to false.
+ * @param *board The parent board to which this piece belongs
+ * @param color Character representing the color of the piece (W for white, B for black)
+ */
 ChessPiece_Pawn::ChessPiece_Pawn(ChessBoard *board, char color) : ChessPiece(board, 'P', color, 1)
 {
 	promoted_piece = NULL;
@@ -8,6 +14,11 @@ ChessPiece_Pawn::ChessPiece_Pawn(ChessBoard *board, char color) : ChessPiece(boa
 	enPassant_ = false;
 }
 
+/**'Copy' constructor. Copies the provided piece's information but links this piece to a different board.
+ * If the provided piece has been promoted, copies the promoted piece's information as well.
+ * @param *board The parent board to which this piece belongs
+ * @param *piece The piece whose information is to be copied
+ */
 ChessPiece_Pawn::ChessPiece_Pawn(ChessBoard *board, ChessPiece_Pawn *piece) : ChessPiece(board, piece)
 {
 	hasMoved_ = piece->hasMoved_;
@@ -34,6 +45,13 @@ ChessPiece_Pawn::ChessPiece_Pawn(ChessBoard *board, ChessPiece_Pawn *piece) : Ch
 	}
 }
 
+/**Checks the square immediately ahead of the pawn to see if it can move there. Also check the square which is two spaces
+ * ahead if the pawn has not yet moved. Checks the two squares in front of the pawn which are diagonally adjacent to it
+ * for enemy pieces to see if the pawn can capture. Checks to make sure moves will not place the owner's king in check
+ * before adding them to a list of allowed moves. If the pawn has been promoted, calls the promoted piece's legalMoves()
+ * function instead.
+ * @return The list of the indices of the squares to which this pawn is allowed to move
+ */
 vector<int> ChessPiece_Pawn::legalMoves()
 {
 	vector<int> legalMoves;
@@ -144,26 +162,42 @@ vector<int> ChessPiece_Pawn::legalMoves()
 	return legalMoves;
 }
 
+/**Sets the enPassant_ condition to false. This is called at the beginning of the owner's turn to ensure that a pawn is
+ * only allowed to be captured via en passant during the move immediately after it has made its two-square advance.
+ */
 void ChessPiece_Pawn::refresh()
 {
 	enPassant_ = false;
 }
 
+/**Accessor. Returns the hasMoved_ condition of the pawn.
+ * @return Returns true if the pawn has been moved, false if not
+ */
 bool ChessPiece_Pawn::hasMoved()
 {
 	return hasMoved_;
 }
 
+/**Resets the hasMoved_ boolean to false. This is to be called after the piece has been placed on the board using the move()
+ * function.
+ */
 void ChessPiece_Pawn::reset()
 {
 	hasMoved_ = false;
 }
 
+/**Returns the enPassant_ boolean of the piece.
+ * @return Returns true if the pawn can be captured via en passant, false if not
+ */
 bool ChessPiece_Pawn::enPassant()
 {
 	return enPassant_;
 }
 
+/**Moves the pawn to the destination square. Sets enPassant_ to true if the pawn is making a two-square advance.
+ * Checks to see if the pawn is performing an en passant capture.
+ * @param *dest The square to which the pawn is to be moved
+ */
 void ChessPiece_Pawn::move(ChessBoardSquare *dest)
 {
 	if(square_ != NULL)
@@ -199,6 +233,10 @@ void ChessPiece_Pawn::move(ChessBoardSquare *dest)
 	}
 }
 
+/**Moves the pawn to the destination square but leaves the current square alone. To be used with the board class's copy
+ * constructor.
+ * @param *dest The square to which the pawn is to be moved
+ */
 void ChessPiece_Pawn::cmove(ChessBoardSquare *dest)
 {
 	if(dest->getPiece() != NULL)
@@ -224,6 +262,11 @@ void ChessPiece_Pawn::cmove(ChessBoardSquare *dest)
 	}
 }
 
+
+/**Promotes the pawn by instantiating the promoted_piece to the proper piece type.
+ * Also updates the pawn's information.
+ * @param type The type of the piece to which the pawn is to be promoted
+ */
 void ChessPiece_Pawn::promote(char type)
 {
 	switch(type)
@@ -252,6 +295,8 @@ void ChessPiece_Pawn::promote(char type)
 	promoted_piece->copyData(this);
 }
 
+/**Destructor. Deletes the promoted piece if the pawn has been promoted.
+ */
 ChessPiece_Pawn::~ChessPiece_Pawn()
 {
 	if(promoted_piece != NULL)

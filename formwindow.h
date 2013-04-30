@@ -40,9 +40,13 @@ class FormWindow : public QWidget
 		/**Accessor used to retrieve the time control from the provided QLineEdit text box.*/
 		int getTime();
 	private:
+		/**Layout used to format the fields*/
 		QFormLayout *layout;
+		/**Used to retrieve the white player's name*/
 		QLineEdit *whiteName;
+		/**Used to retrieve the black player's name*/
 		QLineEdit *blackName;
+		/**Used to retrieve the time control*/
 		QLineEdit *time;
 };
 #endif
