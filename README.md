@@ -1,12 +1,12 @@
 # Game - Programming Assignments Private Repository
 ### Student Information
-  + Name: Tommy Trojan
-  + USC Email: ttrojan@usc.edu
-  + USC ID: 0123456789
+  + Name: Michael Qian
+  + USC Email: michaebq@usc.edu
+  + USC ID: 9560743253
 
 ### Game Information
-  + Game Name: myAwsomeGame
-  + Game Description: One sentence game description
+  + Game Name: Chess
+  + Game Description: 2-player chess game with optional time control setting
   + [Game Design Doc](GameDesignDoc.md)
 
 
