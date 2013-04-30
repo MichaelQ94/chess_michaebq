@@ -47,7 +47,7 @@ QString GUISquare::getCoordinates()
 void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)
 {
 	//must wait until animation is done before making new moves
-	if(gw_->slidingPiece() != NULL || gw_->slidingPiece2() != NULL)
+	if(!gw_->gameInProgress() || gw_->slidingPiece() != NULL || gw_->slidingPiece2() != NULL)
 		return;
 	c->pos();
 	if(gw_->selectedPiece() == NULL && gpiece_ != NULL) //no selected piece and this square is occupied
@@ -109,8 +109,8 @@ void GUISquare::mousePressEvent(QGraphicsSceneMouseEvent *c)
 		gw_->deselectPiece();
 		gw_->selectedSquare()->resetColor();
 		gw_->deselectSquare();
-		gw_->changeTurn();
 		gw_->dehighlight();
+		gw_->changeTurn();
 	}
 }
 

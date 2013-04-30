@@ -4,6 +4,18 @@ GraphicsWindow::GraphicsWindow(MainWindow *main, QString whiteName, QString blac
 {
 	mw_ = main;
 	timerCount_ = 0;
+	totalTime_ = 0;
+	whiteSec_ = 0;
+	blackSec_ = 0;
+	whiteMin_ = time;
+	blackMin_ = time;
+	gameOver_ = false;
+	
+	if(time == 0)
+		increment_ = 1;
+	else
+		increment_ = -1;
+	
 	selectedPiece_ = NULL;
 	selectedSquare_ = NULL;
 	slidingPiece_ = NULL;
@@ -104,20 +116,20 @@ GraphicsWindow::GraphicsWindow(MainWindow *main, QString whiteName, QString blac
 	
 	whiteName_ = new QGraphicsSimpleTextItem(whiteName);
 	whiteName_->setPos(120, 485);
-	whiteScore_ = new QGraphicsSimpleTextItem("Score: " + QString::number(0));
+	whiteScore_ = new QGraphicsSimpleTextItem("Score: " + QString::number(board_.whiteScore()));
 	whiteScore_->setPos(120, 500);
-	whiteRemaining_ = new QGraphicsSimpleTextItem("Remaining: " + QString::number(39));
+	whiteRemaining_ = new QGraphicsSimpleTextItem("Remaining: " + QString::number(board_.whiteRemaining()));
 	whiteRemaining_->setPos(120, 515);
-	whiteTime_ = new QGraphicsSimpleTextItem("Time: " + QString::number(time) + ":00");
+	whiteTime_ = new QGraphicsSimpleTextItem("Time: " + timeToString(whiteMin_) + ":" + timeToString(whiteSec_));
 	whiteTime_->setPos(120, 530);
 	
 	blackName_ = new QGraphicsSimpleTextItem(blackName);
 	blackName_->setPos(360, 485);
-	blackScore_ = new QGraphicsSimpleTextItem("Score: " + QString::number(0));
+	blackScore_ = new QGraphicsSimpleTextItem("Score: " + QString::number(board_.blackScore()));
 	blackScore_->setPos(360, 500);
-	blackRemaining_ = new QGraphicsSimpleTextItem("Remaining: " + QString::number(39));
+	blackRemaining_ = new QGraphicsSimpleTextItem("Remaining: " + QString::number(board_.blackRemaining()));
 	blackRemaining_->setPos(360, 515);
-	blackTime_ = new QGraphicsSimpleTextItem("Time: " + QString::number(time) + ":00");
+	blackTime_ = new QGraphicsSimpleTextItem("Time: " + timeToString(blackMin_) + ":" + timeToString(blackSec_));
 	blackTime_->setPos(360, 530);
 	
 	scene->addItem(whiteName_);
@@ -128,6 +140,65 @@ GraphicsWindow::GraphicsWindow(MainWindow *main, QString whiteName, QString blac
 	scene->addItem(blackScore_);
 	scene->addItem(blackRemaining_);
 	scene->addItem(blackTime_);
+}
+
+void GraphicsWindow::endGame()
+{
+	gameOver_ = true;
+}
+
+bool GraphicsWindow::gameInProgress()
+{
+	return timer->isActive();
+}
+
+QString GraphicsWindow::timeToString(int time)
+{
+	if(time < 10)
+		return QString("0" + QString::number(time));
+	else
+		return QString::number(time);
+}
+
+void GraphicsWindow::incrementTime()
+{
+	if(board_.whiteToMove())
+	{
+		if(whiteSec_ == 0 && increment_ == -1)
+		{
+			whiteSec_ = 59;
+			--whiteMin_;
+		}
+		else if(whiteSec_ == 59 && increment_ == 1)
+		{
+			whiteSec_ = 0;
+			++whiteMin_;
+		}
+		else
+			whiteSec_ += increment_;
+		
+		whiteTime_->setText("Time: " + timeToString(whiteMin_) + ":" + timeToString(whiteSec_));
+	}
+	else
+	{
+		if(blackSec_ == 0 && increment_ == -1)
+		{
+			blackSec_ = 59;
+			--blackMin_;
+		}
+		else if(whiteSec_ == 59 && increment_ == 1)
+		{
+			blackSec_ = 0;
+			++blackMin_;
+		}
+		else
+			blackSec_ += increment_;
+		
+		blackTime_->setText("Time: " + timeToString(blackMin_) + ":" + timeToString(blackSec_));
+	}
+	
+	if(totalTime_ == 45)
+		timer->setInterval(2);
 }
 
 QWidget* GraphicsWindow::getViewPort()
@@ -189,7 +260,11 @@ void GraphicsWindow::changeTurn()
 	board_.changeTurn();
 	if(board_.whiteToMove() && board_.whiteCheckMate())
 	{
+		gameOver_ = true;
+		timer->stop();
 		move_ += "#";
+		mw_->printMove(move_);
+		move_.clear();
 		QMessageBox errorMessage;
 		errorMessage.setText("Checkmate! Black wins.");
 		errorMessage.exec();
@@ -197,7 +272,10 @@ void GraphicsWindow::changeTurn()
 	}
 	else if(!board_.whiteToMove() && board_.blackCheckMate())
 	{
+		gameOver_ = true;
 		move_ += "#";
+		mw_->printMove(move_);
+		move_.clear();
 		QMessageBox errorMessage;
 		errorMessage.setText("Checkmate! White wins.");
 		errorMessage.exec();
@@ -205,13 +283,24 @@ void GraphicsWindow::changeTurn()
 	}
 	else if(board_.staleMate())
 	{
+		mw_->printMove(move_);
+		move_.clear();
+		gameOver_ = true;
 		QMessageBox errorMessage;
 		errorMessage.setText("Stalemate!");
 		errorMessage.exec();
 		return;
 	}
+	if((board_.whiteToMove() && board_.whiteCheck()) || (!board_.whiteToMove() && board_.blackCheck()))
+		move_ += "+";
+	
 	mw_->printMove(move_);
 	move_.clear();
+	
+	whiteScore_->setText("Score: " + QString::number(board_.whiteScore()));
+	whiteRemaining_->setText("Remaining: " + QString::number(board_.whiteRemaining()));
+	blackScore_->setText("Score: " + QString::number(board_.blackScore()));
+	blackRemaining_->setText("Remaining: " + QString::number(board_.blackRemaining()));
 }
 
 void GraphicsWindow::capturePiece(GUIPiece *piece)
@@ -290,7 +379,47 @@ void GraphicsWindow::enPassantCapture(GUISquare* gsquare)
 
 void GraphicsWindow::promote(GUIPiece *gpiece)
 {
-	gpiece->promote('Q');
+	gpiece->color();
+	QPushButton *knight = new QPushButton("Knight", this);
+	QPushButton *bishop = new QPushButton("Bishop", this);
+	QPushButton *rook = new QPushButton("Rook", this);
+	QPushButton *queen = new QPushButton("Queen", this);
+	connect(knight, SIGNAL(clicked()), this, SLOT(promoteN()));
+	connect(bishop, SIGNAL(clicked()), this, SLOT(promoteB()));
+	connect(rook, SIGNAL(clicked()), this, SLOT(promoteR()));
+	connect(queen, SIGNAL(clicked()), this, SLOT(promoteQ()));
+	
+	QMessageBox errorMessage;
+	errorMessage.addButton(knight, QMessageBox::AcceptRole);
+	errorMessage.addButton(bishop, QMessageBox::AcceptRole);
+	errorMessage.addButton(rook, QMessageBox::AcceptRole);
+	errorMessage.addButton(queen, QMessageBox::AcceptRole);
+	errorMessage.setText("Select the piece you would like to promote to:");
+	errorMessage.exec();
+	delete knight;
+	delete bishop;
+	delete rook;
+	delete queen;
+}
+
+void GraphicsWindow::promoteN()
+{
+	selectedPiece_->promote('N');
+}
+
+void GraphicsWindow::promoteB()
+{
+	selectedPiece_->promote('B');
+}
+
+void GraphicsWindow::promoteR()
+{
+	selectedPiece_->promote('R');
+}
+
+void GraphicsWindow::promoteQ()
+{
+	selectedPiece_->promote('Q');
 }
 
 GUIPiece* GraphicsWindow::slidingPiece()
@@ -325,11 +454,24 @@ void GraphicsWindow::stopSliding2()
 
 void GraphicsWindow::handleTimer()
 {
+	//time control
 	++timerCount_;
+	if(timerCount_ == 500)
+	{
+		++totalTime_;
+		incrementTime();
+		timerCount_ = 0;
+	}
+	
+	//animation
 	if(slidingPiece_ != NULL)
 		slidingPiece_->slide();
 	if(slidingPiece2_ != NULL)
 		slidingPiece2_->slide();
+	
+	//check for end of game
+	if(gameOver_ && slidingPiece_ == NULL && slidingPiece2_ == NULL)
+		timer->stop();
 }
 
 GraphicsWindow::~GraphicsWindow()

@@ -35,7 +35,12 @@ class GraphicsWindow : public QWidget
 		QGraphicsView *view;
 		QTimer *timer;
 		int timerCount_;
+		int totalTime_;
+		int whiteSec_, whiteMin_, blackSec_, blackMin_;
+		int increment_;
 		QString move_;
+		bool gameOver_;
+		char promoteChar_;
 		
 		GUISquare* guisquares_[64];
 		GUIPiece* whiteguipieces_[16];
@@ -52,6 +57,10 @@ class GraphicsWindow : public QWidget
 	public:
 		GraphicsWindow(MainWindow *main, QString whiteName, QString blackName, int time);
 		~GraphicsWindow();
+		void endGame();
+		bool gameInProgress();
+		QString timeToString(int time);
+		void incrementTime();
 		void setMove(QString move);
 		QString getMove();
 		void setSelectedPiece(GUIPiece* gpiece);
@@ -78,6 +87,10 @@ class GraphicsWindow : public QWidget
 		QWidget* getViewPort();
 		
 	public slots:
-		void handleTimer();	
+		void handleTimer();
+		void promoteN();
+		void promoteB();
+		void promoteR();
+		void promoteQ();	
 };
 #endif

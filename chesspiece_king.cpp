@@ -280,7 +280,7 @@ bool ChessPiece_King::checkForCheck()
 			break;
 		if(board_->square(index)->getPiece() != NULL) //contains enemy piece
 		{
-			if((board_->square(index)->getPiece()->type() == 'B' ||
+			if((board_->square(index)->getPiece()->type() == 'R' ||
 			board_->square(index)->getPiece()->type() == 'Q')) //this square contains an enemy bishop or queen
 			{
 				inCheck_ = true;

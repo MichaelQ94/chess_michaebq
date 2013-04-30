@@ -33,6 +33,10 @@ class ChessBoard
 		ChessBoardSquare* square(int index);
 		ChessPiece* whitePiece(int index);
 		ChessPiece* blackPiece(int index);
+		int whiteScore();
+		int whiteRemaining();
+		int blackScore();
+		int blackRemaining();
 		bool whiteCheck();
 		bool blackCheck();
 		bool whiteCheckMate();

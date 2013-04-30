@@ -326,6 +326,51 @@ bool ChessBoard::staleMate()
 	return false;
 }
 
+int ChessBoard::whiteScore()
+{
+	int score = 0;
+	for(int i = 0; i < 15; ++i)
+	{
+		if(blackPieces_[i]->captured())
+			score += blackPieces_[i]->value();
+	}
+	return score;
+}
+
+int ChessBoard::whiteRemaining()
+{
+	int score = 0;
+	for(int i = 0; i < 15; ++i)
+	{
+		if(!whitePieces_[i]->captured())
+			score += whitePieces_[i]->value();
+	}
+	return score;
+}
+
+int ChessBoard::blackScore()
+{
+	int score = 0;
+	for(int i = 0; i < 15; ++i)
+	{
+		if(whitePieces_[i]->captured())
+			score += whitePieces_[i]->value();
+	}
+	return score;
+}
+
+int ChessBoard::blackRemaining()
+{
+	int score = 0;
+	for(int i = 0; i < 15; ++i)
+	{
+		if(!blackPieces_[i]->captured())
+			score += blackPieces_[i]->value();
+	}
+	return score;
+}
+
+
 ChessBoard::~ChessBoard()
 {
 	//delete dynamically allocated squares
