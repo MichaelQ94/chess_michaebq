@@ -26,3 +26,13 @@ moc_formwindow.cpp
 
 # Project-specific executables
 game_michaebq
+
+# Dynamically generated .txt files
+config.txt
+
+# Dynamically generated .bak files
+config.txt.bak
+
+# Dynamically generated directories
+html/
+latex/
