@@ -178,6 +178,14 @@ void GraphicsWindow::incrementTime()
 			whiteSec_ += increment_;
 		
 		whiteTime_->setText("Time: " + timeToString(whiteMin_) + ":" + timeToString(whiteSec_));
+		if(increment_ == -1 && whiteMin_ == 0 && whiteSec_ == 0)
+		{
+			QMessageBox errorMessage;
+			errorMessage.setText("Out of time! Black wins.");
+			errorMessage.exec();
+			timer->stop();
+			return;
+		}
 	}
 	else
 	{
@@ -195,6 +203,14 @@ void GraphicsWindow::incrementTime()
 			blackSec_ += increment_;
 		
 		blackTime_->setText("Time: " + timeToString(blackMin_) + ":" + timeToString(blackSec_));
+		if(increment_ == -1 && blackMin_ == 0 && blackSec_ ==0)
+		{
+			QMessageBox errorMessage;
+			errorMessage.setText("Out of time! White wins.");
+			errorMessage.exec();
+			timer->stop();
+			return;
+		}
 	}
 	
 	if(totalTime_ == 45)
