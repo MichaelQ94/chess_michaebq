@@ -149,6 +149,7 @@ ChessBoardSquare* ChessPiece::square()
  */
 void ChessPiece::promote(char type)
 {
+	type = type;
 }
 
 /**Moves the piece from its current square (if there is one) to the given square. Sets the square_ variable to point to
